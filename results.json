@@ -2,66 +2,170 @@
   {
     "agent": "agent1-solver",
     "ticket": "My refund hasn't arrived and it has been 9 days.",
+    "status": "verified",
+    "needs_review": false,
     "meko_match": "mid",
-    "what_happened": "REUSED from Meko",
-    "meko_search_seconds": 12.1,
-    "ai_seconds": 1.8,
-    "total_seconds": 14.2,
-    "prompt_tokens_with_meko": 151,
-    "prompt_tokens_whole_kb_baseline": 1254,
-    "total_tokens_billed": 224,
-    "reply": "Hello! I am sorry to hear you haven't received your refund yet. I have checked your payment status and, since it shows as \"processed,\" please allow 3 more bank working days for the funds to appear in your account. If it still hasn't arrived after that time, please let us know so we can escalate this to our billing team."
+    "reply": "I am sorry to hear that you have not received your refund after 9 days. Since I cannot see your payment status, I would like to escalate your ticket to our billing team for further investigation. Please let me know if you would like me to proceed with this request.",
+    "memory_id": null,
+    "meko_search_seconds": 12.9,
+    "ai_seconds": 5.6,
+    "total_seconds": 18.7,
+    "prompt_tokens": 205,
+    "baseline_prompt_tokens": 1308,
+    "trace": [
+      {
+        "t": 0.0,
+        "step": "Ticket received",
+        "detail": "My refund hasn't arrived and it has been 9 days."
+      },
+      {
+        "t": 12.9,
+        "step": "Searched Meko",
+        "detail": "match quality: mid; approved knowledge hits: 1; unapproved drafts: 0"
+      },
+      {
+        "t": 12.9,
+        "step": "Decision",
+        "detail": "Approved knowledge found -> answering from it"
+      },
+      {
+        "t": 18.7,
+        "step": "Reply written",
+        "detail": "5.6s, 205 prompt tokens"
+      }
+    ]
   },
   {
     "agent": "agent1-solver",
-    "ticket": "The app crashes whenever I try to apply a gift card at checkout.",
+    "ticket": "My in-app wallet balance disappeared after I updated the app.",
+    "status": "new_draft_saved",
+    "needs_review": true,
     "meko_match": "low",
-    "what_happened": "SOLVED from scratch + SAVED to Meko",
-    "meko_search_seconds": 13.6,
-    "ai_seconds": 1.5,
-    "total_seconds": 23.0,
-    "prompt_tokens_with_meko": 76,
-    "prompt_tokens_whole_kb_baseline": 0,
-    "total_tokens_billed": 246,
-    "reply": "**Problem Summary:** The app is experiencing a memory overflow error when attempting to validate gift card authentication tokens during the checkout handshake.\n\n**Steps to Fix:**\n1. Clear your app\u2019s cache in Settings > ShopEasy > Storage > Clear Cache, then force-close and restart the app.\n2. If the crash persists, manually input the gift card code rather than using the \"copy-paste\" or \"scan\" functions, as special characters in the clipboard can trigger the conflict.\n3. Ensure your app is updated to version 5.4.2 or higher, as this patch specifically addresses gift card validation crashes.\n\nIf these steps fail, please escalate this ticket directly to our **Level 3 Technical Engineering Team** via the internal \"Checkout-Stability-Queue\" to investigate your specific account ID for database errors."
-  },
-  {
-    "agent": "agent2-helper",
-    "ticket": "Checkout keeps crashing on the gift card screen in your app.",
-    "meko_match": "mid",
-    "what_happened": "REUSED from Meko",
-    "meko_search_seconds": 13.7,
+    "reply": "It appears your in-app wallet balance is not displaying correctly following an application update. To troubleshoot, please ensure your internet connection is stable, try force-closing and restarting the app, and verify that you are logged into the correct account. As I am unable to view your account details or specific system status, I cannot confirm the cause of this discrepancy. A human specialist should review this issue to provide further assistance; would you like me to escalate your ticket?",
+    "memory_id": "01fe0aaf-715f-408b-b1e6-90dbd2455988",
+    "meko_search_seconds": 18.0,
     "ai_seconds": 1.2,
-    "total_seconds": 15.3,
-    "prompt_tokens_with_meko": 250,
-    "prompt_tokens_whole_kb_baseline": 1252,
-    "total_tokens_billed": 337,
-    "reply": "I\u2019m sorry to hear you're experiencing crashes during checkout! Please ensure your app is updated to version 5.4.2 or higher and try clearing your app's cache in your storage settings. If the issue persists, try manually typing your gift card code instead of using copy-paste or scanning. If these steps don't resolve it, please let us know so we can escalate this to our engineering team."
+    "total_seconds": 26.5,
+    "prompt_tokens": 133,
+    "baseline_prompt_tokens": 0,
+    "trace": [
+      {
+        "t": 0.0,
+        "step": "Ticket received",
+        "detail": "My in-app wallet balance disappeared after I updated the app."
+      },
+      {
+        "t": 18.0,
+        "step": "Direct knowledge search",
+        "detail": "top hit not relevant enough (rerank=0.061946147933013465, distance=0.9850225597649179)"
+      },
+      {
+        "t": 18.0,
+        "step": "Searched Meko",
+        "detail": "match quality: low; approved knowledge hits: 0; unapproved drafts: 0"
+      },
+      {
+        "t": 18.0,
+        "step": "Decision",
+        "detail": "Nobody has solved this -> solving it, then saving as a DRAFT"
+      },
+      {
+        "t": 20.5,
+        "step": "Saved to Meko",
+        "detail": "New fix stored as an unapproved draft"
+      },
+      {
+        "t": 26.5,
+        "step": "Reply written",
+        "detail": "1.2s, 133 prompt tokens"
+      }
+    ]
   },
   {
     "agent": "agent2-helper",
-    "ticket": "Loyalty points were not added after my purchase.",
-    "meko_match": "low",
-    "what_happened": "SOLVED from scratch + SAVED to Meko",
-    "meko_search_seconds": 14.3,
-    "ai_seconds": 1.3,
-    "total_seconds": 23.0,
-    "prompt_tokens_with_meko": 71,
-    "prompt_tokens_whole_kb_baseline": 0,
-    "total_tokens_billed": 220,
-    "reply": "**Problem Summary:** Your loyalty points failed to sync because your account email was not verified at the time of checkout.\n\n**Steps to Resolve:**\n1. Navigate to your Account Settings and ensure your email address shows a \"Verified\" status; if not, click the \"Resend Verification\" link.\n2. Once verified, reply to this ticket with your order number and the email address used during the transaction so I can manually inject the points.\n3. Refresh your app or browser profile page after 10 minutes to see the updated balance.\n\nIf these steps do not trigger an update within 24 hours, please escalate this ticket to our **Loyalty Tier 2 Database Team** to perform a manual ledger reconciliation."
+    "ticket": "The money in my app wallet is missing since the latest update.",
+    "status": "draft_reused",
+    "needs_review": true,
+    "meko_match": "mid",
+    "reply": "I'm sorry to hear your wallet balance is not displaying correctly following the recent update. As a suggestion, please try ensuring your internet connection is stable, force-closing and restarting the app, and verifying that you are logged into the correct account. Since I cannot confirm the cause of this discrepancy, I would like to escalate your ticket to a human specialist who can verify these details for you. Would you like me to proceed with that escalation?",
+    "memory_id": null,
+    "meko_search_seconds": 16.3,
+    "ai_seconds": 0.9,
+    "total_seconds": 17.5,
+    "prompt_tokens": 254,
+    "baseline_prompt_tokens": 1328,
+    "trace": [
+      {
+        "t": 0.0,
+        "step": "Ticket received",
+        "detail": "The money in my app wallet is missing since the latest update."
+      },
+      {
+        "t": 15.4,
+        "step": "Direct knowledge search",
+        "detail": "top hit not relevant enough (rerank=8.576217112105953e-05, distance=0.6993006601622838)"
+      },
+      {
+        "t": 16.3,
+        "step": "Checked drafts",
+        "detail": "1 of 1 saved draft(s) describe the same problem"
+      },
+      {
+        "t": 16.3,
+        "step": "Searched Meko",
+        "detail": "match quality: mid; approved knowledge hits: 0; unapproved drafts: 1"
+      },
+      {
+        "t": 16.3,
+        "step": "Decision",
+        "detail": "Only an UNAPPROVED draft found -> reusing it, flagged for review"
+      },
+      {
+        "t": 17.5,
+        "step": "Reply written",
+        "detail": "0.9s, 254 prompt tokens"
+      }
+    ]
   },
   {
-    "agent": "agent1-solver",
-    "ticket": "I bought something yesterday but my reward points balance did not go up.",
+    "agent": "agent2-helper",
+    "ticket": "My wallet shows zero balance after the app update.",
+    "status": "verified",
+    "needs_review": false,
     "meko_match": "mid",
-    "what_happened": "REUSED from Meko",
-    "meko_search_seconds": 14.5,
-    "ai_seconds": 2.0,
-    "total_seconds": 16.8,
-    "prompt_tokens_with_meko": 427,
-    "prompt_tokens_whole_kb_baseline": 1254,
-    "total_tokens_billed": 499,
-    "reply": "Hello! I\u2019m sorry to hear your loyalty points didn't sync after your purchase. This usually happens because your account email wasn't verified at checkout, so please ensure your email status is \"Verified\" in your Account Settings. Once that is done, please reply with your order number and email address so I can manually add those points for you."
+    "reply": "I am sorry to hear you are having trouble seeing your wallet balance. Please ensure your internet connection is stable, force-close and restart the app, and verify that you are logged into the correct account. If the issue persists, I can escalate this to a human specialist for further assistance.",
+    "memory_id": null,
+    "meko_search_seconds": 15.1,
+    "ai_seconds": 1.0,
+    "total_seconds": 16.3,
+    "prompt_tokens": 172,
+    "baseline_prompt_tokens": 1304,
+    "trace": [
+      {
+        "t": 0.0,
+        "step": "Ticket received",
+        "detail": "My wallet shows zero balance after the app update."
+      },
+      {
+        "t": 15.1,
+        "step": "Direct knowledge search",
+        "detail": "found 1 approved entry(ies) the combined search missed"
+      },
+      {
+        "t": 15.1,
+        "step": "Searched Meko",
+        "detail": "match quality: mid; approved knowledge hits: 1; unapproved drafts: 0"
+      },
+      {
+        "t": 15.1,
+        "step": "Decision",
+        "detail": "Approved knowledge found -> answering from it"
+      },
+      {
+        "t": 16.3,
+        "step": "Reply written",
+        "detail": "1.0s, 172 prompt tokens"
+      }
+    ]
   }
 ]
