@@ -1,0 +1,10 @@
+{
+  "name": "supportiq-motion-check",
+  "private": true,
+  "scripts": {
+    "test": "node check.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.1"
+  }
+}

@@ -1,0 +1,542 @@
+[
+  {
+    "case_id": "BENCH-001",
+    "group_id": "FLOW-01",
+    "stage": "seed",
+    "ticket": "I am having this problem: the wallet balance is blank after signing in on a new phone.",
+    "category": "Payments & billing",
+    "topic": "Wallet balance missing",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-002",
+    "group_id": "FLOW-01",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the wallet balance is blank after signing in on a new phone.",
+    "category": "Payments & billing",
+    "topic": "Wallet balance missing",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-003",
+    "group_id": "FLOW-01",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the wallet balance is blank after signing in on a new phone.",
+    "category": "Payments & billing",
+    "topic": "Wallet balance missing",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-004",
+    "group_id": "FLOW-02",
+    "stage": "seed",
+    "ticket": "I am having this problem: a gift card is accepted but the order total does not change.",
+    "category": "Checkout & discounts",
+    "topic": "Gift card not applied",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-005",
+    "group_id": "FLOW-02",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a gift card is accepted but the order total does not change.",
+    "category": "Checkout & discounts",
+    "topic": "Gift card not applied",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-006",
+    "group_id": "FLOW-02",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a gift card is accepted but the order total does not change.",
+    "category": "Checkout & discounts",
+    "topic": "Gift card not applied",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-007",
+    "group_id": "FLOW-03",
+    "stage": "seed",
+    "ticket": "I am having this problem: reward points are not shown after an order was marked complete.",
+    "category": "Products & rewards",
+    "topic": "Reward points missing",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-008",
+    "group_id": "FLOW-03",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: reward points are not shown after an order was marked complete.",
+    "category": "Products & rewards",
+    "topic": "Reward points missing",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-009",
+    "group_id": "FLOW-03",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: reward points are not shown after an order was marked complete.",
+    "category": "Products & rewards",
+    "topic": "Reward points missing",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-010",
+    "group_id": "FLOW-04",
+    "stage": "seed",
+    "ticket": "I am having this problem: one parcel arrived but the second package in a split shipment has no update.",
+    "category": "Orders & delivery",
+    "topic": "Split shipment tracking",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-011",
+    "group_id": "FLOW-04",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: one parcel arrived but the second package in a split shipment has no update.",
+    "category": "Orders & delivery",
+    "topic": "Split shipment tracking",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-012",
+    "group_id": "FLOW-04",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: one parcel arrived but the second package in a split shipment has no update.",
+    "category": "Orders & delivery",
+    "topic": "Split shipment tracking",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-013",
+    "group_id": "FLOW-05",
+    "stage": "seed",
+    "ticket": "I am having this problem: the app no longer sends an alert when an order changes status.",
+    "category": "App & notifications",
+    "topic": "Order alerts not received",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-014",
+    "group_id": "FLOW-05",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the app no longer sends an alert when an order changes status.",
+    "category": "App & notifications",
+    "topic": "Order alerts not received",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-015",
+    "group_id": "FLOW-05",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the app no longer sends an alert when an order changes status.",
+    "category": "App & notifications",
+    "topic": "Order alerts not received",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-016",
+    "group_id": "FLOW-06",
+    "stage": "seed",
+    "ticket": "I am having this problem: a sign-in verification code arrives after it has expired.",
+    "category": "Account & access",
+    "topic": "Two-step code delayed",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-017",
+    "group_id": "FLOW-06",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a sign-in verification code arrives after it has expired.",
+    "category": "Account & access",
+    "topic": "Two-step code delayed",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-018",
+    "group_id": "FLOW-06",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a sign-in verification code arrives after it has expired.",
+    "category": "Account & access",
+    "topic": "Two-step code delayed",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-019",
+    "group_id": "FLOW-07",
+    "stage": "seed",
+    "ticket": "I am having this problem: the courier missed the scheduled return collection.",
+    "category": "Returns & refunds",
+    "topic": "Return pickup rescheduling",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-020",
+    "group_id": "FLOW-07",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the courier missed the scheduled return collection.",
+    "category": "Returns & refunds",
+    "topic": "Return pickup rescheduling",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-021",
+    "group_id": "FLOW-07",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the courier missed the scheduled return collection.",
+    "category": "Returns & refunds",
+    "topic": "Return pickup rescheduling",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-022",
+    "group_id": "FLOW-08",
+    "stage": "seed",
+    "ticket": "I am having this problem: the shopping cart is empty after returning from the payment screen.",
+    "category": "Checkout & discounts",
+    "topic": "Cart emptied during checkout",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-023",
+    "group_id": "FLOW-08",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the shopping cart is empty after returning from the payment screen.",
+    "category": "Checkout & discounts",
+    "topic": "Cart emptied during checkout",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-024",
+    "group_id": "FLOW-08",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the shopping cart is empty after returning from the payment screen.",
+    "category": "Checkout & discounts",
+    "topic": "Cart emptied during checkout",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-025",
+    "group_id": "FLOW-09",
+    "stage": "seed",
+    "ticket": "I am having this problem: a saved card appears in the account but not at checkout.",
+    "category": "Payments & billing",
+    "topic": "Saved card not selectable",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-026",
+    "group_id": "FLOW-09",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a saved card appears in the account but not at checkout.",
+    "category": "Payments & billing",
+    "topic": "Saved card not selectable",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-027",
+    "group_id": "FLOW-09",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a saved card appears in the account but not at checkout.",
+    "category": "Payments & billing",
+    "topic": "Saved card not selectable",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-028",
+    "group_id": "FLOW-10",
+    "stage": "seed",
+    "ticket": "I am having this problem: a customer changed their profile email but the old address still appears.",
+    "category": "Account & access",
+    "topic": "Profile email update",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-029",
+    "group_id": "FLOW-10",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a customer changed their profile email but the old address still appears.",
+    "category": "Account & access",
+    "topic": "Profile email update",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-030",
+    "group_id": "FLOW-10",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a customer changed their profile email but the old address still appears.",
+    "category": "Account & access",
+    "topic": "Profile email update",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-031",
+    "group_id": "FLOW-11",
+    "stage": "seed",
+    "ticket": "I am having this problem: an invoice shows the customer's previous billing address.",
+    "category": "Payments & billing",
+    "topic": "Invoice address correction",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-032",
+    "group_id": "FLOW-11",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: an invoice shows the customer's previous billing address.",
+    "category": "Payments & billing",
+    "topic": "Invoice address correction",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-033",
+    "group_id": "FLOW-11",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: an invoice shows the customer's previous billing address.",
+    "category": "Payments & billing",
+    "topic": "Invoice address correction",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-034",
+    "group_id": "FLOW-12",
+    "stage": "seed",
+    "ticket": "I am having this problem: the product thumbnail differs from the selected color in the order.",
+    "category": "Products & rewards",
+    "topic": "Product image mismatch",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-035",
+    "group_id": "FLOW-12",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the product thumbnail differs from the selected color in the order.",
+    "category": "Products & rewards",
+    "topic": "Product image mismatch",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-036",
+    "group_id": "FLOW-12",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the product thumbnail differs from the selected color in the order.",
+    "category": "Products & rewards",
+    "topic": "Product image mismatch",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-037",
+    "group_id": "FLOW-13",
+    "stage": "seed",
+    "ticket": "I am having this problem: a customer wants to pause a subscription without cancelling it.",
+    "category": "Subscriptions",
+    "topic": "Subscription pause request",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-038",
+    "group_id": "FLOW-13",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a customer wants to pause a subscription without cancelling it.",
+    "category": "Subscriptions",
+    "topic": "Subscription pause request",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-039",
+    "group_id": "FLOW-13",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a customer wants to pause a subscription without cancelling it.",
+    "category": "Subscriptions",
+    "topic": "Subscription pause request",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-040",
+    "group_id": "FLOW-14",
+    "stage": "seed",
+    "ticket": "I am having this problem: a customer needs to add a delivery note after placing an order.",
+    "category": "Orders & delivery",
+    "topic": "Delivery instruction update",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-041",
+    "group_id": "FLOW-14",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a customer needs to add a delivery note after placing an order.",
+    "category": "Orders & delivery",
+    "topic": "Delivery instruction update",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-042",
+    "group_id": "FLOW-14",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a customer needs to add a delivery note after placing an order.",
+    "category": "Orders & delivery",
+    "topic": "Delivery instruction update",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-043",
+    "group_id": "FLOW-15",
+    "stage": "seed",
+    "ticket": "I am having this problem: the app returns to the previous language after sign-in.",
+    "category": "App & notifications",
+    "topic": "App language preference",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-044",
+    "group_id": "FLOW-15",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the app returns to the previous language after sign-in.",
+    "category": "App & notifications",
+    "topic": "App language preference",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-045",
+    "group_id": "FLOW-15",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the app returns to the previous language after sign-in.",
+    "category": "App & notifications",
+    "topic": "App language preference",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-046",
+    "group_id": "FLOW-16",
+    "stage": "seed",
+    "ticket": "I am having this problem: the exchange page does not list the size the customer needs.",
+    "category": "Returns & refunds",
+    "topic": "Exchange size selection",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-047",
+    "group_id": "FLOW-16",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the exchange page does not list the size the customer needs.",
+    "category": "Returns & refunds",
+    "topic": "Exchange size selection",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-048",
+    "group_id": "FLOW-16",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the exchange page does not list the size the customer needs.",
+    "category": "Returns & refunds",
+    "topic": "Exchange size selection",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-049",
+    "group_id": "FLOW-17",
+    "stage": "seed",
+    "ticket": "I am having this problem: no shipping methods appear after the customer enters a delivery address.",
+    "category": "Checkout & discounts",
+    "topic": "Shipping option unavailable",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-050",
+    "group_id": "FLOW-17",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: no shipping methods appear after the customer enters a delivery address.",
+    "category": "Checkout & discounts",
+    "topic": "Shipping option unavailable",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-051",
+    "group_id": "FLOW-17",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: no shipping methods appear after the customer enters a delivery address.",
+    "category": "Checkout & discounts",
+    "topic": "Shipping option unavailable",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-052",
+    "group_id": "FLOW-18",
+    "stage": "seed",
+    "ticket": "I am having this problem: a customer cannot enable a restock notification for an unavailable item.",
+    "category": "Products & rewards",
+    "topic": "Product restock alert",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-053",
+    "group_id": "FLOW-18",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a customer cannot enable a restock notification for an unavailable item.",
+    "category": "Products & rewards",
+    "topic": "Product restock alert",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-054",
+    "group_id": "FLOW-18",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a customer cannot enable a restock notification for an unavailable item.",
+    "category": "Products & rewards",
+    "topic": "Product restock alert",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-055",
+    "group_id": "FLOW-19",
+    "stage": "seed",
+    "ticket": "I am having this problem: the customer arrived for pickup but the order is not marked ready.",
+    "category": "Orders & delivery",
+    "topic": "Pickup order not ready",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-056",
+    "group_id": "FLOW-19",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: the customer arrived for pickup but the order is not marked ready.",
+    "category": "Orders & delivery",
+    "topic": "Pickup order not ready",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-057",
+    "group_id": "FLOW-19",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: the customer arrived for pickup but the order is not marked ready.",
+    "category": "Orders & delivery",
+    "topic": "Pickup order not ready",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "BENCH-058",
+    "group_id": "FLOW-20",
+    "stage": "seed",
+    "ticket": "I am having this problem: a customer cannot find the account data download option.",
+    "category": "Privacy & account",
+    "topic": "Account data download",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "BENCH-059",
+    "group_id": "FLOW-20",
+    "stage": "reuse",
+    "ticket": "This is happening to me too: a customer cannot find the account data download option.",
+    "category": "Privacy & account",
+    "topic": "Account data download",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "BENCH-060",
+    "group_id": "FLOW-20",
+    "stage": "verified",
+    "ticket": "I followed up because the same issue persists: a customer cannot find the account data download option.",
+    "category": "Privacy & account",
+    "topic": "Account data download",
+    "expected_status": "verified"
+  }
+]

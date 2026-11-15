@@ -1,16 +1,17 @@
-"""Step 1 test: connect to Meko from Python and list the tools it offers.
+"""List Meko tool names and complete input schemas without invoking them.
 
-Run:
-    pip install mcp
-    set MEKO_API_KEY=your_full_key        (Windows)
-    export MEKO_API_KEY=your_full_key     (Mac/Linux)
-    python test_connection.py
+Run from the repository root with: python -m scripts.inspect_tools
 """
+
 import asyncio
+import json
 import os
 
+from dotenv import load_dotenv
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
+
+load_dotenv()
 
 MEKO_URL = "https://mcp.mekodata.ai/mcp"
 API_KEY = os.environ.get("MEKO_API_KEY")
@@ -25,9 +26,10 @@ async def main():
         async with ClientSession(read, write) as session:
             await session.initialize()
             tools = await session.list_tools()
-            print(f"Connected! Meko offers {len(tools.tools)} tools:\n")
             for tool in tools.tools:
-                print(" -", tool.name)
+                print("=" * 60)
+                print(tool.name)
+                print(json.dumps(tool.inputSchema, indent=2, ensure_ascii=False))
 
 
 asyncio.run(main())

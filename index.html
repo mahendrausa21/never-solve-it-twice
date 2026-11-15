@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Never Solve It Twice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--midnight-graphite:#1B1E20;--lunar-silver:#D8DDE0;--toxic-lime:#B8F238;--bg:var(--midnight-graphite);--w:var(--lunar-silver);--lime:var(--toxic-lime);--sage:var(--toxic-lime);--line:rgba(216,221,224,.2);--mute:rgba(216,221,224,.7);--panel:rgba(216,221,224,.055);--dur-fast:120ms;--dur-base:220ms;--dur-slow:480ms;--dur-count:600ms;--dur-memory-count:400ms;--dur-agent-count:500ms;--ease-out:cubic-bezier(.2,.7,.2,1);--ease-inout:cubic-bezier(.4,0,.2,1);color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html,body{background:var(--bg);color:var(--w);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{padding:0 clamp(14px,2.4vw,32px) 40px;max-width:1400px;margin:0 auto}
+button,textarea{font:inherit;color:inherit}
+button{transition:transform var(--dur-fast) var(--ease-out)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+header{display:flex;align-items:center;gap:18px;padding:18px 0;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+.logo i{width:28px;height:28px;border-radius:8px;background:var(--lime);display:grid;place-items:center;color:var(--bg);font-style:normal;font-weight:700}
+.nav{position:relative;display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:4px}
+.nav button{position:relative;z-index:1;border:0;background:transparent;border-radius:99px;padding:8px 18px;color:var(--mute);cursor:pointer;font-weight:500;transition:transform var(--dur-fast) var(--ease-out)}
+.nav button.on{background:transparent;color:var(--bg)}
+.tab-indicator{position:absolute;z-index:0;left:4px;top:4px;height:calc(100% - 8px);border-radius:99px;background:var(--w);pointer-events:none;transition:transform var(--dur-base) var(--ease-inout)}
+.nav button:hover{transform:translateY(-1px)}
+button:hover:not(:disabled){transform:translateY(-1px)}
+button:active:not(:disabled){transform:translateY(0) scale(.98)}
+.nav em{font-style:normal;background:var(--lime);color:var(--bg);border-radius:99px;padding:1px 8px;margin-left:6px;font-size:12px;font-weight:700}
+.pills{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:99px;padding:5px 12px;color:var(--mute);font-size:12.5px}
+.dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--w)}.on .dot{background:var(--sage);border-color:var(--sage);box-shadow:0 0 8px var(--sage)}
+.page{display:none}.page.show{display:block}
+.page.show.is-entering{animation:page-enter var(--dur-base) var(--ease-out) both}
+.page.show.is-entering>*{animation:block-enter var(--dur-base) var(--ease-out) both}
+.page.show.is-entering>:nth-child(2){animation-delay:60ms}
+.page.show.is-entering>:nth-child(3){animation-delay:120ms}
+.page.show.is-entering>:nth-child(4){animation-delay:180ms}
+.page.show.is-entering>:nth-child(5){animation-delay:240ms}
+h1{font-size:clamp(32px,4.4vw,58px);line-height:1.02;letter-spacing:-.035em;font-weight:700;margin:10px 0 20px}
+h1 em{font-style:normal;color:var(--lime)}
+.loop{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto}
+.step{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--mute);display:flex;gap:10px;align-items:center;transition:border-color var(--dur-base) var(--ease-out)}
+.step b{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:11px;flex:none}
+.step.act{border-color:var(--lime);color:var(--w)}.step.act b{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px}
+.card.white{background:var(--lunar-silver);color:var(--midnight-graphite);border-color:var(--lunar-silver);--bg:var(--lunar-silver);--w:var(--midnight-graphite);--mute:rgba(27,30,32,.7);--line:rgba(27,30,32,.2);--panel:rgba(27,30,32,.06)}
+.card h2{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card h2 small{color:var(--mute);font-weight:400;font-size:12px}
+textarea{width:100%;min-height:96px;resize:vertical;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px;outline:none}
+textarea:focus{border-color:var(--lime)}
+.hint{color:var(--mute);font-size:12.5px;margin:8px 0 12px}
+.btn{background:var(--lime);color:var(--bg);border:0;border-radius:99px;padding:10px 20px;font-weight:600;cursor:pointer;transition:transform var(--dur-fast) var(--ease-out),opacity var(--dur-fast) var(--ease-out)}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn:hover:not(:disabled){transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:translateY(0) scale(.98)}
+.btn.is-loading{opacity:.72}
+.btn.approve-failed{animation:button-shake var(--dur-base) var(--ease-inout)}
+.flow{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.ev{display:flex;gap:10px;align-items:center;font-size:13px;padding:8px 10px;border-radius:10px;background:var(--panel)}
+.ev .t{margin-left:auto;color:var(--mute);font-variant-numeric:tabular-nums}
+.ev .d{width:7px;height:7px;border-radius:50%;background:var(--lime);flex:none;display:grid;place-items:center}
+.ev.run .d{animation:pulse 1.2s ease-in-out infinite}
+.ev.done .d{background:transparent}
+.ev.done .d::after{content:"✓";font-size:10px;line-height:1;color:var(--lime);transform:scale(.7)}
+.ev.fresh-step.done .d::after{animation:check-pop var(--dur-fast) var(--ease-out) both}
+.ev.failed .d,.ev.warning .d{background:transparent;border:1.5px solid var(--w)}
+.ev.fresh-step{animation:step-enter var(--dur-base) var(--ease-out) both}
+.ev span.n{color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:42%}
+.reply{margin-top:14px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--bg)}
+.reply p{margin:10px 0;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.reply p.open{-webkit-line-clamp:unset}
+.tag{display:inline-block;border-radius:99px;padding:3px 11px;font-size:12px;font-weight:600;border:1px solid var(--w)}
+.t-verified{background:var(--lime);color:var(--bg);border-color:var(--lime)}.t-draft_reused{background:var(--w);color:var(--bg)}.t-new_draft_saved{background:transparent;color:var(--w)}.t-error{border-style:dashed}
+.outcome-stamp{display:inline-block;transform-origin:center;animation:stamp-land var(--dur-slow) var(--ease-out) both}
+.reply.warning .outcome-stamp{animation-delay:var(--dur-fast)}
+.reply.ticket-case-enter{animation:case-enter var(--dur-base) var(--ease-out) both}
+.card.white .t-verified{background:var(--lime);color:var(--midnight-graphite);border-color:var(--lime)}
+.meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--mute);font-size:12.5px;align-items:center}.meta b{color:var(--w);font-weight:600}
+.link{margin-left:auto;background:none;border:0;color:var(--lime);cursor:pointer;font-weight:600}
+.agent-page{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.agent-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.agent-stats div{border:1px solid var(--line);border-radius:12px;padding:10px}
+.agent-stats b{display:block;font-size:22px}
+.agent-stats span{color:var(--mute);font-size:12px}
+.agent-heading{display:flex;align-items:center;gap:8px}
+.agent-live{width:7px;height:7px;border-radius:50%;background:var(--lime);opacity:0;flex:none}
+.agent-live.active{opacity:1;animation:pulse 1.2s ease-in-out infinite}
+.agent-card.assigned{animation:agent-assigned var(--dur-slow) var(--ease-out)}
+.agent-card.fresh-agent{animation:card-enter var(--dur-base) var(--ease-out) both}
+.agent-bar{height:5px;border-radius:99px;overflow:hidden;background:var(--panel);margin-top:12px}
+.agent-bar-fill{height:100%;width:100%;transform:scaleX(0);transform-origin:left;background:var(--lime)}
+.overview b,.agent-stats b,.card h2 small,.nav em{font-variant-numeric:tabular-nums}
+.overview b,.agent-stats b,.card h2 small{min-width:3ch}
+.overview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.overview article{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--panel)}
+.overview b{display:block;font-size:28px;line-height:1.2}
+.overview span{display:block;color:var(--mute);font-size:12px;margin-top:4px}
+.recent{display:flex;flex-direction:column;gap:2px}
+.row{display:flex;gap:8px;align-items:center;border:0;background:transparent;text-align:left;padding:7px 8px;border-radius:10px;cursor:pointer;width:100%;transition:transform var(--dur-fast) var(--ease-out)}
+.row:hover{transform:translateY(-1px)}
+.recent .row.fresh-row{animation:ticket-row var(--dur-slow) var(--ease-out) both}
+.row:hover{background:var(--panel)}.row span.q{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.fix{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--bg)}
+.card.white .fix{background:transparent}
+.fix.approved{border-color:var(--lime)}
+.fix.fresh-memory{animation:draft-enter var(--dur-slow) var(--ease-out) both}
+.fix.fresh-approved,.fix.fresh-expanded{animation:card-enter var(--dur-base) var(--ease-out) both}
+.fix.approval-flip{transform-origin:top left}
+.fix.is-closing{animation:item-out var(--dur-fast) var(--ease-out) both}
+.fix p{white-space:pre-line;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
+.fix div{display:flex;justify-content:space-between;align-items:center;color:var(--mute);font-size:12px}
+.more{display:block;margin:6px auto 0;background:none;border:1px solid var(--line);border-radius:99px;padding:7px 18px;color:inherit;cursor:pointer;font-weight:600;transition:transform var(--dur-fast) var(--ease-out),opacity var(--dur-fast) var(--ease-out)}.more:hover{background:var(--panel);transform:translateY(-1px)}.more:active{transform:scale(.98)}
+.more.label-change{animation:label-fade var(--dur-fast) var(--ease-out)}
+.nav em.badge-pulse{animation:badge-pulse var(--dur-slow) var(--ease-out)}
+.loading-placeholder{animation:placeholder-pulse 1.2s ease-in-out infinite}
+.empty{color:var(--mute);padding:22px 4px;text-align:center}
+.toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,8px);opacity:0;background:var(--lime);color:var(--bg);padding:10px 18px;border-radius:99px;font-weight:600;display:none;z-index:9}
+.toast.show{display:block;animation:toast-in var(--dur-base) var(--ease-out) both}
+.toast.leaving{animation:toast-out var(--dur-fast) var(--ease-out) both}
+@keyframes page-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes block-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes step-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes case-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes card-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes draft-enter{0%{opacity:0;transform:translateY(6px);border-color:#E4AE4B}70%{opacity:1;border-color:#E4AE4B}100%{opacity:1;transform:translateY(0);border-color:var(--line)}}
+@keyframes ticket-row{0%{opacity:0;transform:translateY(-6px);background-color:rgba(184,242,56,.22)}65%{opacity:1;background-color:rgba(184,242,56,.16)}100%{opacity:1;transform:translateY(0);background-color:transparent}}
+@keyframes stamp-land{0%{opacity:0;transform:scale(1.35) rotate(-6deg)}100%{opacity:1;transform:scale(1) rotate(-1.5deg)}}
+@keyframes check-pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes badge-pulse{0%,100%{transform:scale(1)}45%{transform:scale(1.14)}}
+@keyframes item-out{to{opacity:0;transform:translateY(-4px)}}
+@keyframes label-fade{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes toast-in{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes toast-out{to{opacity:0;transform:translate(-50%,4px)}}
+@keyframes button-shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-3px)}50%{transform:translateX(3px)}}
+@keyframes agent-assigned{0%,100%{border-color:var(--line);background-color:var(--panel)}35%,70%{border-color:var(--lime);background-color:rgba(184,242,56,.08)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes placeholder-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+body.tab-hidden .ev.run .d,body.tab-hidden .agent-live.active{animation-play-state:paused}
+@media(max-width:1000px){.grid,.two{grid-template-columns:1fr}}
+@media(max-width:620px){.overview,.agent-page{grid-template-columns:1fr}.agent-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .is-entering,.fresh-row,.fresh-memory,.fresh-approved,.fresh-expanded,.fresh-agent,.fresh-step,.ticket-case-enter,.outcome-stamp,.approve-failed,.agent-card.assigned,.is-closing{transform:none!important}
+  button:hover:not(:disabled),button:active:not(:disabled){transform:none!important}
+  .page.show.is-entering>*{animation-delay:0ms!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><i>N</i>Never Solve It Twice</div>
+  <nav class="nav" aria-label="Pages">
+    <span class="tab-indicator" aria-hidden="true"></span>
+    <button data-p="desk" class="on">Support desk</button>
+    <button data-p="memory">Memory &amp; approval<em id="badge" hidden></em></button>
+    <button data-p="agents">Agents</button>
+  </nav>
+  <div class="pills">
+    <span class="pill" id="p-meko"><span class="dot"></span>Meko</span>
+    <span class="pill" id="p-model">Model</span>
+    <span class="pill" id="p-agents">0 agents</span>
+  </div>
+</header>
+
+<section class="page" id="pg-desk">
+  <h1>Fixed once.<br><em>Known by every agent.</em></h1>
+  <nav class="loop" aria-label="How a ticket moves">
+    <div class="step" data-s="1"><b>1</b>Search memory first</div>
+    <div class="step" data-s="2"><b>2</b>Solve and save fix</div>
+    <div class="step" data-s="3"><b>3</b>Person approves</div>
+    <div class="step" data-s="4"><b>4</b>Every agent reuses it</div>
+  </nav>
+  <div class="overview" aria-label="Ticket outcomes">
+    <article><b id="stat-agent-fixes">—</b><strong>New fixes proposed by agents</strong><span>Generated for tickets without a matching fix; awaiting approval.</span></article>
+    <article><b id="stat-meko-reuse">—</b><strong>Tickets answered using Meko</strong><span id="stat-meko-breakdown">—</span></article>
+    <article><b id="stat-human-approvals">—</b><strong>Fixes approved by people</strong><span>Promoted to shared Meko knowledge.</span></article>
+  </div>
+  <div class="grid">
+    <section class="card" aria-label="Ticket desk">
+      <h2>New ticket</h2>
+      <textarea id="ticket" placeholder="Describe the customer’s problem"></textarea>
+      <p class="hint">Agents search shared memory first, then solve only if nothing is found.</p>
+      <button class="btn" id="send">Send to agents</button>
+      <div class="flow" id="flow"></div>
+      <div id="result"></div>
+    </section>
+    <section class="card" aria-label="Recent tickets">
+      <h2>Recent tickets</h2>
+      <div class="recent" id="recent"></div>
+    </section>
+  </div>
+</section>
+
+<section class="page" id="pg-agents">
+  <h1>Two agents.<br><em>One shared workflow.</em></h1>
+  <p class="hint">Both agents use the same support workflow and shared Meko memory. The app routes tickets to the least-used agent; their names track activity, not different capabilities.</p>
+  <div class="agent-page" id="agent-cards"></div>
+</section>
+
+<section class="page" id="pg-memory">
+  <h1>Only approved fixes<br><em>reach every agent.</em></h1>
+  <div class="two">
+    <section class="card" aria-label="Needs approval">
+      <h2>Needs approval <small id="c-wait"></small></h2>
+      <div id="drafts"></div>
+    </section>
+    <section class="card white" aria-label="Approved">
+      <h2>Approved <small id="c-ok"></small></h2>
+      <div id="approved"></div>
+    </section>
+  </div>
+</section>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=v=>String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LABEL={verified:"Reused approved fix",draft_reused:"Reused agent fix",new_draft_saved:"New fix saved",error:"Failed"};
+let history=[],lifecycle={drafts:[],approved:[]};
+const SHOW=5,open={wait:false,ok:false};
+const seenKeys=new Set(),countValues=new Map(),countFrames=new Map(),barValues=new Map(),labelChanges=new Set();
+const pageEnterTimers=new WeakMap();
+let historyLoaded=false,lifecycleLoaded=false,agentPageShown=false,activeAgent=null,pendingAgentHighlight=null;
+let toastTimer=null,pendingApprovalMotion=null;
+const reduceMotion=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+async function api(path,opt){const r=await fetch(path,opt);if(!r.ok){let d="";try{d=(await r.json()).detail}catch(e){}throw new Error(d||r.statusText)}return r.json()}
+function toast(m){
+  const t=$("#toast");clearTimeout(toastTimer);t.textContent=m;t.classList.remove("leaving");t.classList.add("show");
+  toastTimer=setTimeout(()=>{t.classList.add("leaving");setTimeout(()=>t.classList.remove("show","leaving"),120)},2600)}
+function updateIndicator(){
+  const nav=$(".nav"),active=$(".nav button.on"),indicator=$(".tab-indicator");
+  if(!nav||!active||!indicator)return;
+  indicator.style.width=active.offsetWidth+"px";
+  indicator.style.transform=`translateX(${active.offsetLeft-4}px)`}
+function enterPage(page){
+  const timer=pageEnterTimers.get(page);if(timer)clearTimeout(timer);
+  pageEnterTimers.set(page,setTimeout(()=>{page.classList.remove("is-entering");pageEnterTimers.delete(page)},480))}
+function go(p){
+  const next=$("#pg-"+p),current=$(".page.show");
+  if(!next)return;
+  if(current!==next){
+    if(current){current.classList.remove("show","is-entering")}
+    next.classList.add("show");
+    if(!reduceMotion()){next.classList.add("is-entering");enterPage(next)}
+  }
+  currentPage=p;
+  $$(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.p===p));updateIndicator();location.hash=p;
+  if(p==="agents"){
+    if(!agentPageShown){
+      agentPageShown=true;render();
+      $$("#agent-cards .agent-card").forEach((card,i)=>{card.classList.add("fresh-agent");card.style.animationDelay=Math.min(i*60,60)+"ms"});
+    }
+    if(pendingAgentHighlight){highlightAgent(pendingAgentHighlight);pendingAgentHighlight=null}
+  }}
+let currentPage="desk";
+$$(".nav button").forEach(b=>b.onclick=()=>go(b.dataset.p));
+window.addEventListener("resize",updateIndicator);
+document.addEventListener("visibilitychange",()=>document.body.classList.toggle("tab-hidden",document.hidden));
+document.addEventListener("animationend",e=>{
+  if(!e.target.classList)return;
+  ["fresh-row","fresh-memory","fresh-approved","fresh-expanded","fresh-agent","fresh-step","ticket-case-enter","outcome-stamp","badge-pulse","label-change","approve-failed","assigned"].forEach(c=>e.target.classList.remove(c));
+});
+function stage(n){$$(".step").forEach(s=>s.classList.toggle("act",n>0&&+s.dataset.s<=n))}
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const stepsOf=r=>(r.trace||[]).length;
+const toks=r=>r.token_usage?.total_tokens??r.prompt_tokens??0;
+function motionClass(key,cls,batch){
+  const fresh=!seenKeys.has(key);seenKeys.add(key);
+  if(!fresh||batch&&batch.count>=5)return"";
+  if(batch)batch.count++;
+  return" "+cls}
+function counter(el,key,value,duration=motionMs("--dur-count")){
+  const oldFrame=countFrames.get(key);if(oldFrame)cancelAnimationFrame(oldFrame);
+  countFrames.delete(key);
+  const previous=countValues.get(key);countValues.set(key,value);
+  if(previous===value||reduceMotion()){el.textContent=String(value);return}
+  const startValue=previous===undefined?0:previous;let startTime=null;
+  const tick=now=>{
+    if(startTime===null)startTime=now;
+    const progress=Math.min((now-startTime)/duration,1);
+    el.textContent=String(Math.round(startValue+(value-startValue)*progress));
+    if(progress<1)countFrames.set(key,requestAnimationFrame(tick));
+    else countFrames.delete(key)};
+  countFrames.set(key,requestAnimationFrame(tick))}
+function motionMs(token){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue(token))||0}
+function motionEase(token){return getComputedStyle(document.documentElement).getPropertyValue(token).trim()}
+function growBar(el,key,value,duration=motionMs("--dur-count")){
+  const previous=barValues.get(key);barValues.set(key,value);
+  if(reduceMotion()||previous===value){el.style.transition="none";el.style.transform=`scaleX(${value})`;return}
+  const from=previous===undefined?0:previous;
+  el.style.transition="none";el.style.transform=`scaleX(${from})`;
+  requestAnimationFrame(()=>{if(!el.isConnected)return;el.style.transition=`transform ${duration}ms var(--ease-out)`;el.style.transform=`scaleX(${value})`})}
+function ticketKey(row,index){return String(row.ticket_id||`${row.created_at||""}:${row.ticket||""}:${index}`)}
+function memoryKey(item){return String(item.id||item.memory_id||item.text||item.memory||"")}
+function approvedText(item){return item.text||item.memory||item.chunk_text||JSON.stringify(item)}
+function statusClass(row){return Object.prototype.hasOwnProperty.call(LABEL,row.status)?row.status:"error"}
+function setAgentActivity(name){
+  activeAgent=name;
+  $$("#agent-cards .agent-card").forEach(card=>card.querySelector(".agent-live").classList.toggle("active",card.dataset.agent===name))}
+function highlightAgent(name){
+  const card=$$("#agent-cards .agent-card").find(item=>item.dataset.agent===name);
+  if(card)card.classList.add("assigned")}
+
+async function health(){try{const h=await api("/api/health");const ok=h.meko==="connected";
+  $("#p-meko").className="pill "+(ok?"on":"");$("#p-meko").innerHTML=`<span class="dot"></span>Meko ${ok?"connected":"offline"}`;
+  $("#p-model").textContent=h.model;$("#p-agents").textContent=h.agents+" agents"}catch(e){}}
+
+async function refresh(){
+  const placeholders=$$("#stat-agent-fixes,#stat-meko-reuse,#stat-meko-breakdown,#stat-human-approvals,#c-wait,#c-ok");
+  if(!historyLoaded||!lifecycleLoaded)placeholders.forEach(el=>el.classList.add("loading-placeholder"));
+  try{history=await api("/api/metrics");historyLoaded=true}catch(e){}
+  try{lifecycle=await api("/api/memory/lifecycle");lifecycleLoaded=true}catch(e){}
+  placeholders.forEach(el=>el.classList.remove("loading-placeholder"));render()}
+
+function clean(t){return String(t||"").replace(/^\[DRAFT[^\]]*\]\s*/,"").replace(/^Section:[^\n]*\n+/,"").replace(/\s*(Support problem:|Suggested fix:|Problem:|Fix:|Escalate to:)/g,"\n$1").trim()}
+function render(){
+  const ok=history.filter(r=>r.status&&r.status!=="error");
+  const dr=lifecycle.drafts||[],ap=lifecycle.approved||[];
+  const agentFixes=ok.filter(r=>r.status==="new_draft_saved").length;
+  const approvedReuse=ok.filter(r=>r.status==="verified").length;
+  const draftReuse=ok.filter(r=>r.status==="draft_reused").length;
+  if(historyLoaded){
+    counter($("#stat-agent-fixes"),"kpi:new-fixes",agentFixes);
+    counter($("#stat-meko-reuse"),"kpi:meko-reuse",approvedReuse+draftReuse);
+    $("#stat-meko-breakdown").textContent=`${approvedReuse} approved fixes · ${draftReuse} draft suggestions reused`;
+  }else{$$("#stat-agent-fixes,#stat-meko-reuse,#stat-meko-breakdown").forEach(el=>el.textContent="—")}
+  if(lifecycleLoaded){
+    counter($("#stat-human-approvals"),"kpi:approvals",ap.length);
+    counter($("#c-wait"),"count:pending",dr.length,motionMs("--dur-memory-count"));counter($("#c-ok"),"count:approved",ap.length,motionMs("--dur-memory-count"));
+  }else{$("#stat-human-approvals,#c-wait,#c-ok").forEach(el=>el.textContent="—")}
+  const badge=$("#badge");
+  if(lifecycleLoaded){
+    counter(badge,"count:badge",dr.length,motionMs("--dur-memory-count"));badge.hidden=!dr.length;
+    if(dr.some((item,index)=>!seenKeys.has("draft:"+memoryKey(item))))badge.classList.add("badge-pulse");
+  }else{badge.hidden=true}
+  const agentData=[["agent1-solver","Agent 1 · Solver"],["agent2-helper","Agent 2 · Helper"]];
+  $("#agent-cards").innerHTML=agentData.map(([name,label])=>{
+    const rows=ok.filter(r=>r.agent===name);
+    const reused=rows.filter(r=>r.status==="verified"||r.status==="draft_reused").length;
+    const learned=rows.filter(r=>r.status==="new_draft_saved").length;
+    const freshAgent=!seenKeys.has("agent:"+name);seenKeys.add("agent:"+name);
+    const agentFresh=agentPageShown&&freshAgent?" fresh-agent":"";
+    return`<article class="card agent-card ${name==="agent2-helper"?"white":""}${agentFresh}" data-agent="${name}"><h2><span class="agent-heading">${label}<i class="agent-live${activeAgent===name?" active":""}" aria-hidden="true"></i></span><small>${name}</small></h2>
+      <p class="hint">Searches shared Meko memory first, then uses the existing support workflow to answer or save a draft for review.</p>
+      <div class="agent-stats"><div><b data-counter="agent-tickets-${name}">—</b><span>tickets handled</span></div>
+      <div><b data-counter="agent-reused-${name}">—</b><span>memory reused</span></div>
+        <div><b data-counter="agent-drafts-${name}">—</b><span>new drafts</span></div></div>
+        <div class="agent-bar" role="img" aria-label="Ticket reuse comparison unavailable"><div class="agent-bar-fill"></div></div></article>`}).join("");
+  $$("#agent-cards .agent-card").forEach(card=>{
+    const name=card.dataset.agent,rows=ok.filter(r=>r.agent===name),reused=rows.filter(r=>r.status==="verified"||r.status==="draft_reused").length;
+      if(historyLoaded&&agentPageShown){
+    const countAgent=(element,key,value)=>counter(element,key,value,motionMs(countValues.has(key)?"--dur-count":"--dur-agent-count"));
+    countAgent(card.querySelector(`[data-counter="agent-tickets-${name}"]`),`agent:tickets:${name}`,rows.length);
+    countAgent(card.querySelector(`[data-counter="agent-reused-${name}"]`),`agent:reused:${name}`,reused);
+    countAgent(card.querySelector(`[data-counter="agent-drafts-${name}"]`),`agent:drafts:${name}`,rows.filter(r=>r.status==="new_draft_saved").length);
+        const bar=card.querySelector(".agent-bar"),fill=bar.querySelector(".agent-bar-fill");
+        bar.setAttribute("aria-label",`${reused} of ${rows.length} tickets reused memory`);
+      growBar(fill,`agent:bar:${name}`,rows.length?reused/rows.length:0,motionMs("--dur-agent-count"));
+    }
+  });
+  const recentBatch={count:0};
+  $("#recent").innerHTML=history.slice(-6).map((r,i)=>({r,index:history.length-Math.min(6,history.length)+i})).reverse().map(({r,index})=>{
+    const fresh=motionClass("ticket:"+ticketKey(r,index),"fresh-row",recentBatch),status=statusClass(r);
+    return`<button class="row${fresh}" data-i="${index}"><span class="tag t-${status}">${esc(LABEL[r.status]||r.status)}</span><span class="q">${esc(r.ticket)}</span></button>`}).join("")||'<div class="empty">No tickets yet</div>';
+  $$("#recent .row").forEach(b=>b.onclick=()=>{const r=history[+b.dataset.i];showResult(r);$("#flow").innerHTML=(r.trace||[]).map(step=>evHtml(step)).join("")});
+  const listHtml=(items,key,card,empty,prefix)=>{
+      if(!items.length)return`<div class="empty">${empty}</div>`;
+    const shown=open[key]?items:items.slice(0,SHOW),more=items.length-SHOW;
+    const batch={count:0};
+      return shown.map((x,index)=>{
+        const freshIndex=batch.count,expanded=open[key]&&index>=SHOW;
+        const fresh=motionClass(prefix+memoryKey(x),expanded?"fresh-expanded":prefix==="draft:"?"fresh-memory":"fresh-approved",batch);
+        const delayIndex=expanded?index-SHOW:freshIndex;
+        return card(x,fresh,fresh?Math.min(delayIndex*40,160):0)}).join("")+
+      (more>0?`<button class="more${labelChanges.has(key)?" label-change":""}" data-k="${key}">${open[key]?"Show less":"Read more ("+more+" more)"}</button>`:"")};
+    const draftHtml=listHtml(dr.slice().reverse(),"wait",(x,fresh,delay)=>`<div class="fix${fresh}" style="animation-delay:${delay}ms" data-memory-id="${esc(x.id)}"><p>${esc(clean(x.text))}</p><div><span>by ${esc(x.learned_by||"an agent")}</span><button class="btn" data-id="${esc(x.id)}">Approve</button></div></div>`,"Nothing waiting. New fixes appear here.","draft:");
+  labelChanges.delete("wait");$("#drafts").innerHTML=draftHtml;
+  $$("#drafts .btn").forEach(b=>b.onclick=()=>approve(b,dr.find(x=>x.id===b.dataset.id)));
+  const stamp=x=>String(x.approved_at||x.learned_at||"");
+  const approvedHtml=listHtml(ap.slice().sort((a,b)=>stamp(b).localeCompare(stamp(a))),"ok",(x,fresh,delay)=>`<div class="fix approved${fresh}" style="animation-delay:${delay}ms" data-memory-id="${esc(x.id)}"><p>${esc(clean(approvedText(x)))}</p><div><span class="tag t-verified">Approved</span></div></div>`,"No approved fixes yet.","approved:");
+  labelChanges.delete("ok");$("#approved").innerHTML=approvedHtml;
+  $$(".more").forEach(b=>b.onclick=()=>toggleList(b));
+  if(pendingApprovalMotion){const motion=pendingApprovalMotion;pendingApprovalMotion=null;playApprovalFlip(motion)}
+  if(pendingAgentHighlight&&currentPage==="agents"){highlightAgent(pendingAgentHighlight);pendingAgentHighlight=null}
+}
+function toggleList(button){
+  const key=button.dataset.k,list=button.parentElement;
+  if(open[key]){
+    [...list.querySelectorAll(".fix")].slice(SHOW).forEach(item=>item.classList.add("is-closing"));
+    setTimeout(()=>{open[key]=false;labelChanges.add(key);render()},120);
+  }else{open[key]=true;labelChanges.add(key);render()}}
+function playApprovalFlip(motion){
+  const cards=$$("#approved .fix"),entry=clean(motion.entry||"");
+  const target=cards.find(card=>card.dataset.memoryId===String(motion.id))||
+    cards.find(card=>entry&&clean(card.querySelector("p").textContent)===entry);
+  if(!target||!motion.from||reduceMotion())return;
+  const to=target.getBoundingClientRect(),dx=motion.from.left-to.left,dy=motion.from.top-to.top;
+  const sx=to.width?motion.from.width/to.width:1,sy=to.height?motion.from.height/to.height:1;
+  target.classList.remove("fresh-approved");target.classList.add("approval-flip");
+  const animation=target.animate([
+    {transform:`translate(${dx}px,${dy}px) scale(${sx},${sy})`,opacity:.82,borderColor:"#E4AE4B"},
+    {transform:"translate(0,0) scale(1,1)",opacity:1,borderColor:getComputedStyle(document.documentElement).getPropertyValue("--toxic-lime").trim()},
+  ],{duration:motionMs("--dur-slow"),easing:motionEase("--ease-inout")});
+  animation.onfinish=()=>target.classList.remove("approval-flip")}
+
+async function approve(btn,item){
+  if(!item||!confirm("Approve this fix for every agent?"))return;
+  const source=btn.closest(".fix"),from=source?.getBoundingClientRect();
+  btn.disabled=true;btn.classList.add("is-loading");btn.textContent="Approving…";stage(3);
+  try{
+    const result=await api("/api/approve",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:item.id,text:item.text})});
+    pendingApprovalMotion={id:item.id,entry:result.entry,from};toast("Approved. Every agent can use it now.");await refresh();
+  }catch(e){toast("Approval failed: "+e.message);btn.disabled=false;btn.classList.remove("is-loading");btn.classList.add("approve-failed");btn.textContent="Approve"}}
+
+function evHtml(e,fresh=false){
+  const st=e.state||"completed",state=st==="running"?"run":st==="completed"?"done":["failed","warning"].includes(st)?st:"done";
+  return`<div class="ev ${state}${fresh?" fresh-step":""}"><i class="d"></i>${esc(e.step)}<span class="n">${esc(e.detail)}</span><span class="t">${e.t!=null?esc(e.t+"s"):""}</span></div>`}
+function updateStep(element,e){
+  const previous=element.classList.contains("run"),st=e.state||"completed";
+  element.classList.remove("run","done","failed","warning");
+  element.classList.add(st==="running"?"run":st==="completed"?"done":["failed","warning"].includes(st)?st:"done");
+  element.querySelector(".n").textContent=e.detail||"";
+  element.querySelector(".t").textContent=e.t!=null?e.t+"s":"";
+  if(previous&&st==="completed"&&!reduceMotion()){
+    const dot=element.querySelector(".d");dot.animate([{transform:"scale(.7)"},{transform:"scale(1)"}],{duration:motionMs("--dur-fast"),easing:motionEase("--ease-out")})}}
+function showResult(r){
+  const key=ticketKey(r,history.length),stampKey="stamp:"+key,caseKey="case:"+key;
+  const stampFresh=motionClass(stampKey,"outcome-stamp"),caseFresh=motionClass(caseKey,"ticket-case-enter");
+  const warning=r.status==="draft_reused"||r.status==="error",status=statusClass(r);
+  $("#result").innerHTML=`<div class="reply${warning?" warning":""}${caseFresh}"><span class="tag t-${status}${stampFresh}">${esc(LABEL[r.status]||r.status)}</span>
+  <p id="rp">${esc(r.reply||"")}</p>
+  <div class="meta"><span>Agent <b>${esc(r.agent||"–")}</b></span><span>Time <b>${esc(r.total_seconds??"–")}s</b></span><span>Tokens <b>${esc(toks(r))}</b></span><span>Steps <b>${esc(stepsOf(r))}</b></span>${r.status==="new_draft_saved"?'<button class="link" id="rv">Review fix →</button>':""}</div></div>`;
+  $("#rp").onclick=e=>e.target.classList.toggle("open");const rv=$("#rv");if(rv)rv.onclick=()=>go("memory")}
+
+async function send(){
+  const text=$("#ticket").value.trim();if(!text)return toast("Describe the problem first");
+  const btn=$("#send");btn.disabled=true;btn.classList.add("is-loading");btn.textContent="Working…";$("#flow").innerHTML="";$("#result").innerHTML="";stage(1);
+  const rows={};let assigned=null;
+  try{const res=await fetch("/api/ticket/stream",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ticket:text})});
+    if(!res.ok||!res.body)throw new Error((await res.json().catch(()=>({}))).detail||res.statusText);
+    const rd=res.body.getReader(),dec=new TextDecoder();let buf="";
+    while(true){const{value,done}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
+      let i;while((i=buf.indexOf("\n\n"))>=0){const chunk=buf.slice(0,i);buf=buf.slice(i+2);
+        const line=chunk.split("\n").find(l=>l.startsWith("data:"));if(!line)continue;const ev=JSON.parse(line.slice(5));
+        if(ev.type==="step"){
+          const assignedMatch=ev.step==="Orchestrator"&&String(ev.detail||"").match(/Assigned to (agent[\w-]+)/);
+          if(assignedMatch){assigned=assignedMatch[1];setAgentActivity(assigned)}
+          const existing=rows[ev.step];
+          if(existing&&existing.isConnected)updateStep(existing,ev);
+          else{$("#flow").insertAdjacentHTML("beforeend",evHtml(ev,true));rows[ev.step]=$("#flow").lastElementChild}
+          if(/Resolution|Meko Memory/.test(ev.step))stage(2)}
+        else if(ev.type==="complete"){
+          const r=ev.result;showResult(r);stage(r.status==="new_draft_saved"?2:4);
+          (r.trace||[]).forEach(step=>{
+            if(rows[step.step]&&rows[step.step].isConnected)updateStep(rows[step.step],step);
+            else{$("#flow").insertAdjacentHTML("beforeend",evHtml(step,true));rows[step.step]=$("#flow").lastElementChild}});
+          assigned=r.agent||assigned;setAgentActivity(null);pendingAgentHighlight=assigned}
+        else if(ev.type==="error")throw new Error(ev.detail)}}
+    await refresh()}
+  catch(e){$("#result").innerHTML=`<div class="reply ticket-case-enter"><span class="tag t-error">Failed</span><p>${esc(e.message)}</p></div>`;stage(0);setAgentActivity(null);if(assigned)pendingAgentHighlight=assigned}
+  btn.disabled=false;btn.classList.remove("is-loading");btn.textContent="Send to agents";
+  if(currentPage==="agents"&&pendingAgentHighlight){highlightAgent(pendingAgentHighlight);pendingAgentHighlight=null}}
+
+$("#send").onclick=send;
+$("#ticket").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.ctrlKey||e.metaKey))send()});
+const initialPage=location.hash.slice(1);
+go(["desk","memory","agents"].includes(initialPage)?initialPage:"desk");
+health();refresh();setInterval(health,15000);
+</script>
+</body>
+</html>

@@ -1,0 +1,902 @@
+[
+  {
+    "id": "KB-001",
+    "category": "Payments & billing",
+    "title": "Wallet balance missing",
+    "problem": "The wallet balance is blank after signing in on a new phone.",
+    "verified_fix": "Ask the customer to refresh the wallet and compare the latest wallet activity with the displayed balance. Do not promise funds until the transaction status is confirmed.",
+    "escalate_to": "Billing team if the wallet ledger and balance still disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-002",
+    "category": "Payments & billing",
+    "title": "Wallet balance missing",
+    "problem": "A wallet top-up is shown as pending after the payment step.",
+    "verified_fix": "Ask the customer to refresh the wallet and compare the latest wallet activity with the displayed balance. Do not promise funds until the transaction status is confirmed.",
+    "escalate_to": "Billing team if the wallet ledger and balance still disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-003",
+    "category": "Payments & billing",
+    "title": "Wallet balance missing",
+    "problem": "The wallet balance changed after a completed purchase.",
+    "verified_fix": "Ask the customer to refresh the wallet and compare the latest wallet activity with the displayed balance. Do not promise funds until the transaction status is confirmed.",
+    "escalate_to": "Billing team if the wallet ledger and balance still disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-004",
+    "category": "Payments & billing",
+    "title": "Wallet balance missing",
+    "problem": "A refund returned to the wallet is not visible in the balance.",
+    "verified_fix": "Ask the customer to refresh the wallet and compare the latest wallet activity with the displayed balance. Do not promise funds until the transaction status is confirmed.",
+    "escalate_to": "Billing team if the wallet ledger and balance still disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-005",
+    "category": "Payments & billing",
+    "title": "Wallet balance missing",
+    "problem": "The wallet history and displayed balance do not match.",
+    "verified_fix": "Ask the customer to refresh the wallet and compare the latest wallet activity with the displayed balance. Do not promise funds until the transaction status is confirmed.",
+    "escalate_to": "Billing team if the wallet ledger and balance still disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-006",
+    "category": "Checkout & discounts",
+    "title": "Gift card not applied",
+    "problem": "A gift card is accepted but the order total does not change.",
+    "verified_fix": "Confirm the code is entered in the gift-card field and review the eligible items and remaining balance shown at checkout. Do not request the full gift-card code in an unsecured channel.",
+    "escalate_to": "Payments team if the displayed balance and checkout total disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-007",
+    "category": "Checkout & discounts",
+    "title": "Gift card not applied",
+    "problem": "The gift card field disappears before checkout is completed.",
+    "verified_fix": "Confirm the code is entered in the gift-card field and review the eligible items and remaining balance shown at checkout. Do not request the full gift-card code in an unsecured channel.",
+    "escalate_to": "Payments team if the displayed balance and checkout total disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-008",
+    "category": "Checkout & discounts",
+    "title": "Gift card not applied",
+    "problem": "A gift card balance remains after the customer used it on an order.",
+    "verified_fix": "Confirm the code is entered in the gift-card field and review the eligible items and remaining balance shown at checkout. Do not request the full gift-card code in an unsecured channel.",
+    "escalate_to": "Payments team if the displayed balance and checkout total disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-009",
+    "category": "Checkout & discounts",
+    "title": "Gift card not applied",
+    "problem": "The checkout page rejects a gift card with an available balance.",
+    "verified_fix": "Confirm the code is entered in the gift-card field and review the eligible items and remaining balance shown at checkout. Do not request the full gift-card code in an unsecured channel.",
+    "escalate_to": "Payments team if the displayed balance and checkout total disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-010",
+    "category": "Checkout & discounts",
+    "title": "Gift card not applied",
+    "problem": "A gift card is applied to the wrong eligible item in the cart.",
+    "verified_fix": "Confirm the code is entered in the gift-card field and review the eligible items and remaining balance shown at checkout. Do not request the full gift-card code in an unsecured channel.",
+    "escalate_to": "Payments team if the displayed balance and checkout total disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-011",
+    "category": "Products & rewards",
+    "title": "Reward points missing",
+    "problem": "Reward points are not shown after an order was marked complete.",
+    "verified_fix": "Review the order and rewards activity together, including any return or cancellation status. Explain that only the points shown by the account are confirmed.",
+    "escalate_to": "Rewards team when the order and rewards ledger remain inconsistent.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-012",
+    "category": "Products & rewards",
+    "title": "Reward points missing",
+    "problem": "The points history lists a purchase but the points balance did not change.",
+    "verified_fix": "Review the order and rewards activity together, including any return or cancellation status. Explain that only the points shown by the account are confirmed.",
+    "escalate_to": "Rewards team when the order and rewards ledger remain inconsistent.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-013",
+    "category": "Products & rewards",
+    "title": "Reward points missing",
+    "problem": "Only part of the points for an eligible order appears in the account.",
+    "verified_fix": "Review the order and rewards activity together, including any return or cancellation status. Explain that only the points shown by the account are confirmed.",
+    "escalate_to": "Rewards team when the order and rewards ledger remain inconsistent.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-014",
+    "category": "Products & rewards",
+    "title": "Reward points missing",
+    "problem": "Points from a returned purchase remain in the rewards balance.",
+    "verified_fix": "Review the order and rewards activity together, including any return or cancellation status. Explain that only the points shown by the account are confirmed.",
+    "escalate_to": "Rewards team when the order and rewards ledger remain inconsistent.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-015",
+    "category": "Products & rewards",
+    "title": "Reward points missing",
+    "problem": "A customer cannot see the points estimate before placing an order.",
+    "verified_fix": "Review the order and rewards activity together, including any return or cancellation status. Explain that only the points shown by the account are confirmed.",
+    "escalate_to": "Rewards team when the order and rewards ledger remain inconsistent.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-016",
+    "category": "Orders & delivery",
+    "title": "Split shipment tracking",
+    "problem": "One parcel arrived but the second package in a split shipment has no update.",
+    "verified_fix": "Compare each package and tracking number separately on the order page. Ask the customer to report which package is missing; do not treat one delivered parcel as proof that all parcels arrived.",
+    "escalate_to": "Logistics team if a package has no usable tracking or is reported missing.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-017",
+    "category": "Orders & delivery",
+    "title": "Split shipment tracking",
+    "problem": "Two packages from one order show different delivery dates.",
+    "verified_fix": "Compare each package and tracking number separately on the order page. Ask the customer to report which package is missing; do not treat one delivered parcel as proof that all parcels arrived.",
+    "escalate_to": "Logistics team if a package has no usable tracking or is reported missing.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-018",
+    "category": "Orders & delivery",
+    "title": "Split shipment tracking",
+    "problem": "A shipment notification lists fewer packages than the order page.",
+    "verified_fix": "Compare each package and tracking number separately on the order page. Ask the customer to report which package is missing; do not treat one delivered parcel as proof that all parcels arrived.",
+    "escalate_to": "Logistics team if a package has no usable tracking or is reported missing.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-019",
+    "category": "Orders & delivery",
+    "title": "Split shipment tracking",
+    "problem": "The second tracking number in an order is not clickable.",
+    "verified_fix": "Compare each package and tracking number separately on the order page. Ask the customer to report which package is missing; do not treat one delivered parcel as proof that all parcels arrived.",
+    "escalate_to": "Logistics team if a package has no usable tracking or is reported missing.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-020",
+    "category": "Orders & delivery",
+    "title": "Split shipment tracking",
+    "problem": "A split shipment is marked complete while one parcel is missing.",
+    "verified_fix": "Compare each package and tracking number separately on the order page. Ask the customer to report which package is missing; do not treat one delivered parcel as proof that all parcels arrived.",
+    "escalate_to": "Logistics team if a package has no usable tracking or is reported missing.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-021",
+    "category": "App & notifications",
+    "title": "Order alerts not received",
+    "problem": "The app no longer sends an alert when an order changes status.",
+    "verified_fix": "Check the app's notification preferences and the phone's notification permissions, then reopen the app and review the alert settings. Do not claim a device setting was changed.",
+    "escalate_to": "App support if settings are enabled but alerts remain unreliable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-022",
+    "category": "App & notifications",
+    "title": "Order alerts not received",
+    "problem": "Only delivery alerts are missing while other app notifications arrive.",
+    "verified_fix": "Check the app's notification preferences and the phone's notification permissions, then reopen the app and review the alert settings. Do not claim a device setting was changed.",
+    "escalate_to": "App support if settings are enabled but alerts remain unreliable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-023",
+    "category": "App & notifications",
+    "title": "Order alerts not received",
+    "problem": "Order alerts are delayed until the customer opens the app.",
+    "verified_fix": "Check the app's notification preferences and the phone's notification permissions, then reopen the app and review the alert settings. Do not claim a device setting was changed.",
+    "escalate_to": "App support if settings are enabled but alerts remain unreliable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-024",
+    "category": "App & notifications",
+    "title": "Order alerts not received",
+    "problem": "A customer receives duplicate alerts for a single order update.",
+    "verified_fix": "Check the app's notification preferences and the phone's notification permissions, then reopen the app and review the alert settings. Do not claim a device setting was changed.",
+    "escalate_to": "App support if settings are enabled but alerts remain unreliable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-025",
+    "category": "App & notifications",
+    "title": "Order alerts not received",
+    "problem": "Notifications stopped after the customer changed phones.",
+    "verified_fix": "Check the app's notification preferences and the phone's notification permissions, then reopen the app and review the alert settings. Do not claim a device setting was changed.",
+    "escalate_to": "App support if settings are enabled but alerts remain unreliable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-026",
+    "category": "Account & access",
+    "title": "Two-step code delayed",
+    "problem": "A sign-in verification code arrives after it has expired.",
+    "verified_fix": "Ask the customer to request one new code, use only the newest message, and check the delivery channel's spam or blocked folders. Never ask them to share a verification code.",
+    "escalate_to": "Account security team if the customer cannot access any verification method.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-027",
+    "category": "Account & access",
+    "title": "Two-step code delayed",
+    "problem": "The customer selected email verification but received no code.",
+    "verified_fix": "Ask the customer to request one new code, use only the newest message, and check the delivery channel's spam or blocked folders. Never ask them to share a verification code.",
+    "escalate_to": "Account security team if the customer cannot access any verification method.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-028",
+    "category": "Account & access",
+    "title": "Two-step code delayed",
+    "problem": "A second verification code invalidates the first one.",
+    "verified_fix": "Ask the customer to request one new code, use only the newest message, and check the delivery channel's spam or blocked folders. Never ask them to share a verification code.",
+    "escalate_to": "Account security team if the customer cannot access any verification method.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-029",
+    "category": "Account & access",
+    "title": "Two-step code delayed",
+    "problem": "The verification screen returns to sign-in after code entry.",
+    "verified_fix": "Ask the customer to request one new code, use only the newest message, and check the delivery channel's spam or blocked folders. Never ask them to share a verification code.",
+    "escalate_to": "Account security team if the customer cannot access any verification method.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-030",
+    "category": "Account & access",
+    "title": "Two-step code delayed",
+    "problem": "The customer cannot choose the previously available verification method.",
+    "verified_fix": "Ask the customer to request one new code, use only the newest message, and check the delivery channel's spam or blocked folders. Never ask them to share a verification code.",
+    "escalate_to": "Account security team if the customer cannot access any verification method.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-031",
+    "category": "Returns & refunds",
+    "title": "Return pickup rescheduling",
+    "problem": "The courier missed the scheduled return collection.",
+    "verified_fix": "Review the return status and available pickup options, then help the customer select a currently available slot. Do not promise a collection time that is not shown.",
+    "escalate_to": "Logistics team after repeated missed collections or when no slot is available.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-032",
+    "category": "Returns & refunds",
+    "title": "Return pickup rescheduling",
+    "problem": "A return pickup was scheduled for an address the customer can no longer access.",
+    "verified_fix": "Review the return status and available pickup options, then help the customer select a currently available slot. Do not promise a collection time that is not shown.",
+    "escalate_to": "Logistics team after repeated missed collections or when no slot is available.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-033",
+    "category": "Returns & refunds",
+    "title": "Return pickup rescheduling",
+    "problem": "The return page shows a pickup date that has already passed.",
+    "verified_fix": "Review the return status and available pickup options, then help the customer select a currently available slot. Do not promise a collection time that is not shown.",
+    "escalate_to": "Logistics team after repeated missed collections or when no slot is available.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-034",
+    "category": "Returns & refunds",
+    "title": "Return pickup rescheduling",
+    "problem": "The customer needs to change the return pickup time window.",
+    "verified_fix": "Review the return status and available pickup options, then help the customer select a currently available slot. Do not promise a collection time that is not shown.",
+    "escalate_to": "Logistics team after repeated missed collections or when no slot is available.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-035",
+    "category": "Returns & refunds",
+    "title": "Return pickup rescheduling",
+    "problem": "A second pickup attempt was missed after the first reschedule.",
+    "verified_fix": "Review the return status and available pickup options, then help the customer select a currently available slot. Do not promise a collection time that is not shown.",
+    "escalate_to": "Logistics team after repeated missed collections or when no slot is available.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-036",
+    "category": "Checkout & discounts",
+    "title": "Cart emptied during checkout",
+    "problem": "The shopping cart is empty after returning from the payment screen.",
+    "verified_fix": "Ask the customer to sign in, reopen the cart, and add back any missing items before retrying checkout. Confirm the final item list and total before payment.",
+    "escalate_to": "Checkout support if the cart repeatedly clears during a single session.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-037",
+    "category": "Checkout & discounts",
+    "title": "Cart emptied during checkout",
+    "problem": "Items disappear from the cart when the customer changes delivery address.",
+    "verified_fix": "Ask the customer to sign in, reopen the cart, and add back any missing items before retrying checkout. Confirm the final item list and total before payment.",
+    "escalate_to": "Checkout support if the cart repeatedly clears during a single session.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-038",
+    "category": "Checkout & discounts",
+    "title": "Cart emptied during checkout",
+    "problem": "The cart contents reset after the app is updated.",
+    "verified_fix": "Ask the customer to sign in, reopen the cart, and add back any missing items before retrying checkout. Confirm the final item list and total before payment.",
+    "escalate_to": "Checkout support if the cart repeatedly clears during a single session.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-039",
+    "category": "Checkout & discounts",
+    "title": "Cart emptied during checkout",
+    "problem": "A saved cart cannot be restored after the customer signs in again.",
+    "verified_fix": "Ask the customer to sign in, reopen the cart, and add back any missing items before retrying checkout. Confirm the final item list and total before payment.",
+    "escalate_to": "Checkout support if the cart repeatedly clears during a single session.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-040",
+    "category": "Checkout & discounts",
+    "title": "Cart emptied during checkout",
+    "problem": "The checkout page removes an item while loading shipping options.",
+    "verified_fix": "Ask the customer to sign in, reopen the cart, and add back any missing items before retrying checkout. Confirm the final item list and total before payment.",
+    "escalate_to": "Checkout support if the cart repeatedly clears during a single session.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-041",
+    "category": "Payments & billing",
+    "title": "Saved card not selectable",
+    "problem": "A saved card appears in the account but not at checkout.",
+    "verified_fix": "Confirm the customer is signed into the same account and review the payment methods available on the current checkout screen. Do not request complete card details.",
+    "escalate_to": "Payments team if the saved method remains unavailable in the same account.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-042",
+    "category": "Payments & billing",
+    "title": "Saved card not selectable",
+    "problem": "The payment page shows an old card that the customer removed.",
+    "verified_fix": "Confirm the customer is signed into the same account and review the payment methods available on the current checkout screen. Do not request complete card details.",
+    "escalate_to": "Payments team if the saved method remains unavailable in the same account.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-043",
+    "category": "Payments & billing",
+    "title": "Saved card not selectable",
+    "problem": "The customer cannot choose a saved card after changing the billing address.",
+    "verified_fix": "Confirm the customer is signed into the same account and review the payment methods available on the current checkout screen. Do not request complete card details.",
+    "escalate_to": "Payments team if the saved method remains unavailable in the same account.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-044",
+    "category": "Payments & billing",
+    "title": "Saved card not selectable",
+    "problem": "A saved card is selectable on web but missing in the mobile app.",
+    "verified_fix": "Confirm the customer is signed into the same account and review the payment methods available on the current checkout screen. Do not request complete card details.",
+    "escalate_to": "Payments team if the saved method remains unavailable in the same account.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-045",
+    "category": "Payments & billing",
+    "title": "Saved card not selectable",
+    "problem": "The checkout page asks for a new card after the customer selected a saved one.",
+    "verified_fix": "Confirm the customer is signed into the same account and review the payment methods available on the current checkout screen. Do not request complete card details.",
+    "escalate_to": "Payments team if the saved method remains unavailable in the same account.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-046",
+    "category": "Account & access",
+    "title": "Profile email update",
+    "problem": "A customer changed their profile email but the old address still appears.",
+    "verified_fix": "Check whether the profile marks the new address as verified, and ask the customer to use the latest confirmation message. Do not change account ownership without the approved identity check.",
+    "escalate_to": "Account security team if the customer cannot verify ownership of either address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-047",
+    "category": "Account & access",
+    "title": "Profile email update",
+    "problem": "The email verification link opens a page that says the request is expired.",
+    "verified_fix": "Check whether the profile marks the new address as verified, and ask the customer to use the latest confirmation message. Do not change account ownership without the approved identity check.",
+    "escalate_to": "Account security team if the customer cannot verify ownership of either address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-048",
+    "category": "Account & access",
+    "title": "Profile email update",
+    "problem": "The customer cannot find the email-change confirmation message.",
+    "verified_fix": "Check whether the profile marks the new address as verified, and ask the customer to use the latest confirmation message. Do not change account ownership without the approved identity check.",
+    "escalate_to": "Account security team if the customer cannot verify ownership of either address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-049",
+    "category": "Account & access",
+    "title": "Profile email update",
+    "problem": "The profile shows the new email but receipts still go to the previous one.",
+    "verified_fix": "Check whether the profile marks the new address as verified, and ask the customer to use the latest confirmation message. Do not change account ownership without the approved identity check.",
+    "escalate_to": "Account security team if the customer cannot verify ownership of either address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-050",
+    "category": "Account & access",
+    "title": "Profile email update",
+    "problem": "An email update is pending and the customer cannot submit another request.",
+    "verified_fix": "Check whether the profile marks the new address as verified, and ask the customer to use the latest confirmation message. Do not change account ownership without the approved identity check.",
+    "escalate_to": "Account security team if the customer cannot verify ownership of either address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-051",
+    "category": "Payments & billing",
+    "title": "Invoice address correction",
+    "problem": "An invoice shows the customer's previous billing address.",
+    "verified_fix": "Review the order invoice options and the billing details associated with that order. Explain which fields can be corrected; do not alter tax details without verification.",
+    "escalate_to": "Finance team if the invoice requires a tax or legal correction.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-052",
+    "category": "Payments & billing",
+    "title": "Invoice address correction",
+    "problem": "The customer needs a corrected invoice after updating profile details.",
+    "verified_fix": "Review the order invoice options and the billing details associated with that order. Explain which fields can be corrected; do not alter tax details without verification.",
+    "escalate_to": "Finance team if the invoice requires a tax or legal correction.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-053",
+    "category": "Payments & billing",
+    "title": "Invoice address correction",
+    "problem": "The invoice is missing a company name entered before checkout.",
+    "verified_fix": "Review the order invoice options and the billing details associated with that order. Explain which fields can be corrected; do not alter tax details without verification.",
+    "escalate_to": "Finance team if the invoice requires a tax or legal correction.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-054",
+    "category": "Payments & billing",
+    "title": "Invoice address correction",
+    "problem": "A downloaded invoice does not reflect the latest billing address.",
+    "verified_fix": "Review the order invoice options and the billing details associated with that order. Explain which fields can be corrected; do not alter tax details without verification.",
+    "escalate_to": "Finance team if the invoice requires a tax or legal correction.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-055",
+    "category": "Payments & billing",
+    "title": "Invoice address correction",
+    "problem": "The customer cannot edit the billing address on a completed order.",
+    "verified_fix": "Review the order invoice options and the billing details associated with that order. Explain which fields can be corrected; do not alter tax details without verification.",
+    "escalate_to": "Finance team if the invoice requires a tax or legal correction.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-056",
+    "category": "Products & rewards",
+    "title": "Product image mismatch",
+    "problem": "The product thumbnail differs from the selected color in the order.",
+    "verified_fix": "Compare the product name, selected variant, and order details. If the delivered item differs from the confirmed order, follow the wrong-item return workflow.",
+    "escalate_to": "Catalog team for listing-image errors; returns team for a mismatched delivered item.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-057",
+    "category": "Products & rewards",
+    "title": "Product image mismatch",
+    "problem": "The product page shows a different image after choosing a size.",
+    "verified_fix": "Compare the product name, selected variant, and order details. If the delivered item differs from the confirmed order, follow the wrong-item return workflow.",
+    "escalate_to": "Catalog team for listing-image errors; returns team for a mismatched delivered item.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-058",
+    "category": "Products & rewards",
+    "title": "Product image mismatch",
+    "problem": "A customer received a product that does not match the listing photos.",
+    "verified_fix": "Compare the product name, selected variant, and order details. If the delivered item differs from the confirmed order, follow the wrong-item return workflow.",
+    "escalate_to": "Catalog team for listing-image errors; returns team for a mismatched delivered item.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-059",
+    "category": "Products & rewards",
+    "title": "Product image mismatch",
+    "problem": "The image gallery does not load for one product variant.",
+    "verified_fix": "Compare the product name, selected variant, and order details. If the delivered item differs from the confirmed order, follow the wrong-item return workflow.",
+    "escalate_to": "Catalog team for listing-image errors; returns team for a mismatched delivered item.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-060",
+    "category": "Products & rewards",
+    "title": "Product image mismatch",
+    "problem": "The cart thumbnail shows a different version from the product page.",
+    "verified_fix": "Compare the product name, selected variant, and order details. If the delivered item differs from the confirmed order, follow the wrong-item return workflow.",
+    "escalate_to": "Catalog team for listing-image errors; returns team for a mismatched delivered item.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-061",
+    "category": "Subscriptions",
+    "title": "Subscription pause request",
+    "problem": "A customer wants to pause a subscription without cancelling it.",
+    "verified_fix": "Review the subscription status and the pause options available in the account. Confirm the next scheduled action before making a change.",
+    "escalate_to": "Subscriptions team if the displayed status and scheduled action disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-062",
+    "category": "Subscriptions",
+    "title": "Subscription pause request",
+    "problem": "The pause control is missing from the subscription settings.",
+    "verified_fix": "Review the subscription status and the pause options available in the account. Confirm the next scheduled action before making a change.",
+    "escalate_to": "Subscriptions team if the displayed status and scheduled action disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-063",
+    "category": "Subscriptions",
+    "title": "Subscription pause request",
+    "problem": "A subscription resumed before the customer expected.",
+    "verified_fix": "Review the subscription status and the pause options available in the account. Confirm the next scheduled action before making a change.",
+    "escalate_to": "Subscriptions team if the displayed status and scheduled action disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-064",
+    "category": "Subscriptions",
+    "title": "Subscription pause request",
+    "problem": "The account displays a paused subscription as active.",
+    "verified_fix": "Review the subscription status and the pause options available in the account. Confirm the next scheduled action before making a change.",
+    "escalate_to": "Subscriptions team if the displayed status and scheduled action disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-065",
+    "category": "Subscriptions",
+    "title": "Subscription pause request",
+    "problem": "The customer cannot change the date when a paused subscription resumes.",
+    "verified_fix": "Review the subscription status and the pause options available in the account. Confirm the next scheduled action before making a change.",
+    "escalate_to": "Subscriptions team if the displayed status and scheduled action disagree.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-066",
+    "category": "Orders & delivery",
+    "title": "Delivery instruction update",
+    "problem": "A customer needs to add a delivery note after placing an order.",
+    "verified_fix": "Check whether the order is still eligible for instruction changes and distinguish profile defaults from order-specific notes. Do not promise a carrier can honor a late change.",
+    "escalate_to": "Logistics team if the order has shipped or the instruction cannot be changed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-067",
+    "category": "Orders & delivery",
+    "title": "Delivery instruction update",
+    "problem": "The saved delivery instruction did not appear on the latest order.",
+    "verified_fix": "Check whether the order is still eligible for instruction changes and distinguish profile defaults from order-specific notes. Do not promise a carrier can honor a late change.",
+    "escalate_to": "Logistics team if the order has shipped or the instruction cannot be changed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-068",
+    "category": "Orders & delivery",
+    "title": "Delivery instruction update",
+    "problem": "A customer wants to remove an outdated entry instruction.",
+    "verified_fix": "Check whether the order is still eligible for instruction changes and distinguish profile defaults from order-specific notes. Do not promise a carrier can honor a late change.",
+    "escalate_to": "Logistics team if the order has shipped or the instruction cannot be changed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-069",
+    "category": "Orders & delivery",
+    "title": "Delivery instruction update",
+    "problem": "The delivery note field is unavailable after the order shipped.",
+    "verified_fix": "Check whether the order is still eligible for instruction changes and distinguish profile defaults from order-specific notes. Do not promise a carrier can honor a late change.",
+    "escalate_to": "Logistics team if the order has shipped or the instruction cannot be changed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-070",
+    "category": "Orders & delivery",
+    "title": "Delivery instruction update",
+    "problem": "A delivery instruction is visible on the profile but not on the order.",
+    "verified_fix": "Check whether the order is still eligible for instruction changes and distinguish profile defaults from order-specific notes. Do not promise a carrier can honor a late change.",
+    "escalate_to": "Logistics team if the order has shipped or the instruction cannot be changed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-071",
+    "category": "App & notifications",
+    "title": "App language preference",
+    "problem": "The app returns to the previous language after sign-in.",
+    "verified_fix": "Confirm the language selected in the current app session, then sign out and back in if the preference is not retained. Avoid promising translations that are not available.",
+    "escalate_to": "App support if the preference repeatedly resets or content remains mixed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-072",
+    "category": "App & notifications",
+    "title": "App language preference",
+    "problem": "Only some screens change after the customer selects another language.",
+    "verified_fix": "Confirm the language selected in the current app session, then sign out and back in if the preference is not retained. Avoid promising translations that are not available.",
+    "escalate_to": "App support if the preference repeatedly resets or content remains mixed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-073",
+    "category": "App & notifications",
+    "title": "App language preference",
+    "problem": "A language preference differs between the mobile app and website.",
+    "verified_fix": "Confirm the language selected in the current app session, then sign out and back in if the preference is not retained. Avoid promising translations that are not available.",
+    "escalate_to": "App support if the preference repeatedly resets or content remains mixed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-074",
+    "category": "App & notifications",
+    "title": "App language preference",
+    "problem": "The language selector is unavailable on the account settings page.",
+    "verified_fix": "Confirm the language selected in the current app session, then sign out and back in if the preference is not retained. Avoid promising translations that are not available.",
+    "escalate_to": "App support if the preference repeatedly resets or content remains mixed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-075",
+    "category": "App & notifications",
+    "title": "App language preference",
+    "problem": "The customer sees mixed-language order notifications.",
+    "verified_fix": "Confirm the language selected in the current app session, then sign out and back in if the preference is not retained. Avoid promising translations that are not available.",
+    "escalate_to": "App support if the preference repeatedly resets or content remains mixed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-076",
+    "category": "Returns & refunds",
+    "title": "Exchange size selection",
+    "problem": "The exchange page does not list the size the customer needs.",
+    "verified_fix": "Review the available exchange options and current request status. If the desired variant is unavailable, explain the return and repurchase options shown by the account.",
+    "escalate_to": "Returns team if an exchange is stuck or the selected variant is unavailable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-077",
+    "category": "Returns & refunds",
+    "title": "Exchange size selection",
+    "problem": "A selected exchange size disappears before submission.",
+    "verified_fix": "Review the available exchange options and current request status. If the desired variant is unavailable, explain the return and repurchase options shown by the account.",
+    "escalate_to": "Returns team if an exchange is stuck or the selected variant is unavailable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-078",
+    "category": "Returns & refunds",
+    "title": "Exchange size selection",
+    "problem": "The customer wants to exchange an item for a different color.",
+    "verified_fix": "Review the available exchange options and current request status. If the desired variant is unavailable, explain the return and repurchase options shown by the account.",
+    "escalate_to": "Returns team if an exchange is stuck or the selected variant is unavailable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-079",
+    "category": "Returns & refunds",
+    "title": "Exchange size selection",
+    "problem": "An exchange request is pending but no replacement details appear.",
+    "verified_fix": "Review the available exchange options and current request status. If the desired variant is unavailable, explain the return and repurchase options shown by the account.",
+    "escalate_to": "Returns team if an exchange is stuck or the selected variant is unavailable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-080",
+    "category": "Returns & refunds",
+    "title": "Exchange size selection",
+    "problem": "The customer cannot change an exchange selection after submitting it.",
+    "verified_fix": "Review the available exchange options and current request status. If the desired variant is unavailable, explain the return and repurchase options shown by the account.",
+    "escalate_to": "Returns team if an exchange is stuck or the selected variant is unavailable.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-081",
+    "category": "Checkout & discounts",
+    "title": "Shipping option unavailable",
+    "problem": "No shipping methods appear after the customer enters a delivery address.",
+    "verified_fix": "Confirm the address is complete and review the options currently shown for the cart. Explain the displayed estimate and do not guarantee an unavailable service.",
+    "escalate_to": "Logistics team if no valid shipping option appears for a supported address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-082",
+    "category": "Checkout & discounts",
+    "title": "Shipping option unavailable",
+    "problem": "A previously available delivery option disappears at checkout.",
+    "verified_fix": "Confirm the address is complete and review the options currently shown for the cart. Explain the displayed estimate and do not guarantee an unavailable service.",
+    "escalate_to": "Logistics team if no valid shipping option appears for a supported address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-083",
+    "category": "Checkout & discounts",
+    "title": "Shipping option unavailable",
+    "problem": "The checkout page shows pickup only for a delivery address.",
+    "verified_fix": "Confirm the address is complete and review the options currently shown for the cart. Explain the displayed estimate and do not guarantee an unavailable service.",
+    "escalate_to": "Logistics team if no valid shipping option appears for a supported address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-084",
+    "category": "Checkout & discounts",
+    "title": "Shipping option unavailable",
+    "problem": "A shipping option is listed but cannot be selected.",
+    "verified_fix": "Confirm the address is complete and review the options currently shown for the cart. Explain the displayed estimate and do not guarantee an unavailable service.",
+    "escalate_to": "Logistics team if no valid shipping option appears for a supported address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-085",
+    "category": "Checkout & discounts",
+    "title": "Shipping option unavailable",
+    "problem": "The delivery estimate changes after the customer selects shipping.",
+    "verified_fix": "Confirm the address is complete and review the options currently shown for the cart. Explain the displayed estimate and do not guarantee an unavailable service.",
+    "escalate_to": "Logistics team if no valid shipping option appears for a supported address.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-086",
+    "category": "Products & rewards",
+    "title": "Product restock alert",
+    "problem": "A customer cannot enable a restock notification for an unavailable item.",
+    "verified_fix": "Confirm the selected product variant and the alert preference shown on its page. A notification does not reserve inventory or guarantee availability.",
+    "escalate_to": "Catalog team if the alert is tied to the wrong variant or cannot be managed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-087",
+    "category": "Products & rewards",
+    "title": "Product restock alert",
+    "problem": "A restock alert arrived after the selected variant sold out again.",
+    "verified_fix": "Confirm the selected product variant and the alert preference shown on its page. A notification does not reserve inventory or guarantee availability.",
+    "escalate_to": "Catalog team if the alert is tied to the wrong variant or cannot be managed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-088",
+    "category": "Products & rewards",
+    "title": "Product restock alert",
+    "problem": "The customer receives alerts for the wrong product size.",
+    "verified_fix": "Confirm the selected product variant and the alert preference shown on its page. A notification does not reserve inventory or guarantee availability.",
+    "escalate_to": "Catalog team if the alert is tied to the wrong variant or cannot be managed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-089",
+    "category": "Products & rewards",
+    "title": "Product restock alert",
+    "problem": "The restock notification button is missing on one product page.",
+    "verified_fix": "Confirm the selected product variant and the alert preference shown on its page. A notification does not reserve inventory or guarantee availability.",
+    "escalate_to": "Catalog team if the alert is tied to the wrong variant or cannot be managed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-090",
+    "category": "Products & rewards",
+    "title": "Product restock alert",
+    "problem": "A customer wants to remove a previously created restock alert.",
+    "verified_fix": "Confirm the selected product variant and the alert preference shown on its page. A notification does not reserve inventory or guarantee availability.",
+    "escalate_to": "Catalog team if the alert is tied to the wrong variant or cannot be managed.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-091",
+    "category": "Orders & delivery",
+    "title": "Pickup order not ready",
+    "problem": "The customer arrived for pickup but the order is not marked ready.",
+    "verified_fix": "Check the latest pickup status and location shown on the order. Ask the customer to wait for the ready confirmation before collecting the order.",
+    "escalate_to": "Logistics team if the location cannot locate an order marked ready.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-092",
+    "category": "Orders & delivery",
+    "title": "Pickup order not ready",
+    "problem": "A pickup-ready message does not include the location details.",
+    "verified_fix": "Check the latest pickup status and location shown on the order. Ask the customer to wait for the ready confirmation before collecting the order.",
+    "escalate_to": "Logistics team if the location cannot locate an order marked ready.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-093",
+    "category": "Orders & delivery",
+    "title": "Pickup order not ready",
+    "problem": "The pickup status changed back to processing.",
+    "verified_fix": "Check the latest pickup status and location shown on the order. Ask the customer to wait for the ready confirmation before collecting the order.",
+    "escalate_to": "Logistics team if the location cannot locate an order marked ready.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-094",
+    "category": "Orders & delivery",
+    "title": "Pickup order not ready",
+    "problem": "A customer cannot find the pickup code in the order details.",
+    "verified_fix": "Check the latest pickup status and location shown on the order. Ask the customer to wait for the ready confirmation before collecting the order.",
+    "escalate_to": "Logistics team if the location cannot locate an order marked ready.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-095",
+    "category": "Orders & delivery",
+    "title": "Pickup order not ready",
+    "problem": "The pickup location says it cannot find the order number.",
+    "verified_fix": "Check the latest pickup status and location shown on the order. Ask the customer to wait for the ready confirmation before collecting the order.",
+    "escalate_to": "Logistics team if the location cannot locate an order marked ready.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-096",
+    "category": "Privacy & account",
+    "title": "Account data download",
+    "problem": "A customer cannot find the account data download option.",
+    "verified_fix": "Review the privacy settings and current export request status. Do not send account data through an unverified channel or claim a request is complete without a returned status.",
+    "escalate_to": "Privacy team if the export is unavailable or the request status is unclear.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-097",
+    "category": "Privacy & account",
+    "title": "Account data download",
+    "problem": "The data export request is shown as pending with no next step.",
+    "verified_fix": "Review the privacy settings and current export request status. Do not send account data through an unverified channel or claim a request is complete without a returned status.",
+    "escalate_to": "Privacy team if the export is unavailable or the request status is unclear.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-098",
+    "category": "Privacy & account",
+    "title": "Account data download",
+    "problem": "A downloaded account archive cannot be opened.",
+    "verified_fix": "Review the privacy settings and current export request status. Do not send account data through an unverified channel or claim a request is complete without a returned status.",
+    "escalate_to": "Privacy team if the export is unavailable or the request status is unclear.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-099",
+    "category": "Privacy & account",
+    "title": "Account data download",
+    "problem": "The customer needs to submit another data export request.",
+    "verified_fix": "Review the privacy settings and current export request status. Do not send account data through an unverified channel or claim a request is complete without a returned status.",
+    "escalate_to": "Privacy team if the export is unavailable or the request status is unclear.",
+    "section": "Approved fixes"
+  },
+  {
+    "id": "KB-100",
+    "category": "Privacy & account",
+    "title": "Account data download",
+    "problem": "The export link is no longer available in the account page.",
+    "verified_fix": "Review the privacy settings and current export request status. Do not send account data through an unverified channel or claim a request is complete without a returned status.",
+    "escalate_to": "Privacy team if the export is unavailable or the request status is unclear.",
+    "section": "Approved fixes"
+  }
+]

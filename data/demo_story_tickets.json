@@ -1,0 +1,38 @@
+[
+  {
+    "case_id": "DEMO-KNOWN",
+    "demo_step": "known",
+    "group_id": "DEMO-FLOW",
+    "stage": "known",
+    "topic": "Wallet balance missing",
+    "ticket": "The wallet balance is blank after signing in on a new phone.",
+    "expected_status": "verified"
+  },
+  {
+    "case_id": "DEMO-NEW",
+    "demo_step": "new",
+    "group_id": "DEMO-FLOW",
+    "stage": "seed",
+    "topic": "Duplicate return label",
+    "ticket": "A customer receives two return labels for one return request.",
+    "expected_status": "new_draft_saved"
+  },
+  {
+    "case_id": "DEMO-REWORD",
+    "demo_step": "reuse",
+    "group_id": "DEMO-FLOW",
+    "stage": "reuse",
+    "topic": "Duplicate return label",
+    "ticket": "The return page created a second label for the same package.",
+    "expected_status": "draft_reused"
+  },
+  {
+    "case_id": "DEMO-VERIFIED",
+    "demo_step": "verified",
+    "group_id": "DEMO-FLOW",
+    "stage": "verified",
+    "topic": "Duplicate return label",
+    "ticket": "I still need help because my single return request has two shipping labels.",
+    "expected_status": "verified"
+  }
+]

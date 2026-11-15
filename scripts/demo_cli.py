@@ -7,7 +7,8 @@
   5. Agent 2: same problem again     -> now answered from APPROVED knowledge (verified)
 
 Run:
-    set RESET=1        (optional: forget old drafts first)
+    set RESET=1
+    set CONFIRM_RESET_DATAPACK=<exact isolated DATAPACK_NAME>
     python demo_cli.py
 """
 import asyncio
@@ -55,6 +56,16 @@ async def main():
     meko = await Meko().connect()
     try:
         if os.environ.get("RESET") == "1":
+            datapack_name = os.environ.get("DATAPACK_NAME", "support-hackathon")
+            confirmation = os.environ.get("CONFIRM_RESET_DATAPACK")
+            if (
+                not any(marker in datapack_name.lower() for marker in ("demo", "benchmark"))
+                or confirmation != datapack_name
+            ):
+                raise RuntimeError(
+                    "RESET requires an isolated demo/benchmark DATAPACK_NAME and "
+                    "CONFIRM_RESET_DATAPACK set to the exact same name."
+                )
             await meko.forget_all_drafts()
             print("RESET: cleared learned drafts.")
             await asyncio.sleep(3)

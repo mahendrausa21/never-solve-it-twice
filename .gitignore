@@ -1,2 +1,14 @@
+node_modules/
+results.json
+*.zip
 __pycache__/
 .env
+.venv/
+*.pyc
+.pytest_cache/
+data/history.jsonl
+history.jsonl
+data/results.json
+data/benchmark_results.json
+benchmark-results.jsonl
+*.log
