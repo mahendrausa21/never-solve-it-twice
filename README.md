@@ -1,351 +1,231 @@
-# SupportIQ — Never Solve It Twice
+# SupportIQ
 
-SupportIQ is a prototype customer-support dashboard and multi-agent workflow. It demonstrates how support agents can reuse verified answers, learn from new cases, and keep AI-generated suggestions separate from approved knowledge.
+SupportIQ is a shared-memory support desk for two agents that search Meko before answering, save new fixes as drafts, and reuse a fix only after a person approves it.
 
-The project was created as a hackathon demo for a fictional e-commerce company, ShopEasy. Its central idea is simple: when a familiar issue comes in, retrieve a previously approved solution instead of solving the same problem from scratch. When there is no approved answer, generate a cautious suggestion, save it as an unapproved draft, and let a person review it before it becomes shared knowledge.
+![Support desk showing ticket processing and live Meko status](./docs/screenshots/desk.png)
 
-> **Prototype notice:** This project is intended for local development and demonstration, not production customer support. It has no user authentication or authorization, stores ticket history in a local JSONL file, and sends prompts to the configured external AI and Meko services. Do not submit real customer data or deploy it publicly without adding appropriate security, privacy, retention, and operational controls.
+- Search memory first.
+- Solve and save a draft.
+- A person approves the draft, and every agent reuses it.
 
-## What problem does it solve?
+Demo video: `TODO: add link before submitting`
 
-Support teams repeatedly encounter similar questions, while useful answers can remain trapped in individual conversations or be reused without verification. SupportIQ demonstrates a controlled knowledge-reuse loop:
+## Why this exists
 
-- Search shared support context before generating a new answer.
-- Clearly distinguish approved knowledge from unapproved AI-generated drafts.
-- Reuse a matching draft only as a suggestion that requires human review.
-- Promote a reviewed draft into shared approved knowledge.
-- Show how each ticket moved through triage, agent routing, memory search, and response generation.
+Support agents often re-solve the same issue, and AI-generated suggestions can be mistaken for approved policy. SupportIQ keeps those paths separate: Meko holds the shared context, the app marks suggested answers clearly, and human approval determines what becomes reusable knowledge.
 
-The goal is not to let an AI silently turn its own output into policy. A human approval step separates newly generated suggestions from trusted answers.
+This addresses three hackathon pains: retrieval quality, by searching Meko and a direct knowledge search before answering; context silos, by giving both agents the same datapack; and infrastructure sprawl, by keeping search, memories, conversations, usage records, and self-learning signals in Meko.
 
-## What the application does
-
-The current dashboard has two pages:
-
-- **Desk** submits a ticket, streams its decision ledger, and reopens the last eight saved cases.
-- **Memory** lists drafts awaiting approval, promoted records returned by Meko, searchable results, and sanitized self-learning signals.
-
-The API also exposes benchmark fixtures, but the current dashboard does not include an Evidence page, a How it works page, or a guided-story control.
-
-Ticket history is stored locally in the ignored `data/history.jsonl`. A benchmark run writes one aggregate result to the ignored `data/benchmark_results.json`; it does not enter `/api/metrics`.
-
-## Architecture
+## How it works
 
 ```mermaid
 flowchart LR
-    Customer --> Triage[Keyword triage]
-    Triage --> Agent1[Agent 1 · Solver]
-    Triage --> Agent2[Agent 2 · Helper]
-    Agent1 <--> Meko
-    Agent2 <--> Meko
-    Meko --> Context[Conversations · memory · knowledge]
-    Meko --> Trace[Decision traces · token usage]
-    Meko --> Learning[Self-learning]
-    Agent1 --> Gemini[Gemini replies]
-    Agent2 --> Gemini
-    Meko -->|unapproved draft| Human[Human approval]
-    Human -->|rewrite and promote| Meko
+    C[Customer] --> T[Triage]
+    T --> R[Route to agent]
+    R --> S[Search Meko]
+    S --> D[Draft or reuse]
+    S --> U[Reuse approved knowledge]
+    D --> H[Person approves]
+    H --> K[Shared knowledge]
+    U --> A[Answer]
+    K --> S
+    R --> A
 ```
+
+A ticket is classified locally before routing. The server assigns it to whichever agent has handled fewer tickets; both agents use the same code and Meko datapack. The selected agent searches Meko for approved knowledge and unapproved drafts. Approved knowledge produces a verified answer, while an unapproved draft produces a flagged reuse or is saved as a new draft if no useful match exists. On the Memory page, a person reviews the draft and selects Approve. Approval rewrites the draft into a clean knowledge entry, updates it in Meko, and promotes it. Approving is permanent in Meko and cannot be undone from this app.
+
+## The three pages
+
+| Page | What it shows | Real data feeds |
+|---|---|---|
+| [Support desk](./docs/screenshots/desk.png) | Submit a ticket, watch the streamed workflow, and review recent outcomes. | `/api/ticket/stream`, `/api/metrics`, `/api/health`, and the local JSONL history. |
+| [Memory and approval](./docs/screenshots/memory.png) | Review unapproved drafts, approve one, and inspect promoted memories. | Meko `memory_get_all` results for promoted and unpromoted memories. |
+| [Agents](./docs/screenshots/agents.png) | Show each agent's handled-ticket and memory-reuse counts. | Counts derived from local ticket history plus each running agent's name. |
 
 ## Where Meko is used
 
-| Meko feature or tool | What it does here | Shown on |
+| Meko tool | What it does here | Where to see it |
 |---|---|---|
-| `context_search` | Finds shared context and candidate drafts for a ticket. | Desk |
-| `knowledgebase_search` | Checks relevant approved knowledge when combined search misses it. | Desk |
-| `memory_add` | Saves a new suggestion as an unapproved draft. | Memory |
-| `memory_update` | Rewrites an approved draft into a clean knowledge entry. | Memory |
-| `memory_promote` | Promotes the reviewed entry into shared knowledge. | Memory |
-| `conversation_create` | Creates ticket and approval conversations. | Desk |
-| `conversation_add_message` | Records the ticket, answer, and decision trace. | Desk |
-| `track_token_usage` | Records provider-reported use per model call when available. | Benchmark/API |
-| `selflearning_status` | Returns learning status for the selected datapack. | Memory |
-| `selflearning_shortfalls` | Reports returned learning shortfalls. | Memory |
-| `selflearning_query_log` | Returns a query-log summary; raw queries and emails are stripped by the server. | Memory |
-| `selflearning_verify` | Replays verification only after a person clicks Verify. | Memory |
-| Datapacks | Keep demo and benchmark records in named, isolated datasets. | API |
+| `conversation_create` | Opens setup, agent, ticket, and approval conversations. | Server startup and ticket trace |
+| `datapack_list` | Finds the configured named datapack. | Server startup |
+| `datapack_create` | Creates a new isolated datapack. | `scripts/create_demo_datapack.py` |
+| `context_search` | Searches the datapack for approved knowledge and draft memories. | Support desk and memory search |
+| `knowledgebase_search` | Falls back to a direct approved-knowledge search. | Support desk ticket trace |
+| `memory_add` | Saves a new solution as an unapproved draft. | Support desk new-ticket result |
+| `memory_get_all` | Lists unapproved drafts and promoted memories. | Memory and approval |
+| `memory_update` | Rewrites an approved draft as a clean knowledge entry. | Memory and approval |
+| `memory_promote` | Permanently promotes a draft into shared knowledge. | Memory and approval |
+| `memory_delete_all` | Clears learned drafts only in the explicit reset mode of the CLI demo. | `scripts/demo_cli.py` |
+| `conversation_add_message` | Records ticket replies and approval rewrites in Meko conversations. | Ticket processing and approval |
+| `track_token_usage` | Records provider-reported Gemini usage when the provider returns it. | Meko conversation records |
+| `selflearning_status` | Reads self-learning status for the selected datapack. | Memory and approval API |
+| `selflearning_query_log` | Reads a recent query-log summary. | Memory and approval API |
+| `selflearning_shortfalls` | Reads learning shortfalls for configured steps. | Memory and approval API |
+| `selflearning_verify` | Replays an explicit verification request for a log ID. | Memory and approval API |
 
-## Technology
+`conversation_create`, `datapack_create`, and `conversation_add_message` are also called by setup and benchmark utilities. The app does not call tools outside this list.
 
-- **Python 3.10+** — application and agent implementation.
-- **FastAPI** — HTTP API and dashboard backend.
-- **Uvicorn** — local ASGI web server.
-- **MCP Python SDK** (`mcp`) — connects to Meko's MCP service.
-- **Meko** — shared datapack, context search, learned drafts, and promotion of approved memories.
-- **Google Gen AI SDK** (`google-genai`) — Gemini-powered response generation.
-- **python-dotenv** — loads local settings from `.env`.
-- **HTML, CSS, and vanilla JavaScript** — single-file dashboard in `index.html`; fonts are loaded from Google Fonts.
+## How this maps to the judging criteria
 
-Python dependencies are listed in [`requirements.txt`](./requirements.txt). The dashboard is served directly by FastAPI; there is no separate frontend build step.
+| Criterion | Concrete evidence |
+|---|---|
+| Use of Meko | The shared datapack search, draft memory, approved promotion, conversations, usage tracking, and self-learning calls are implemented in [`agents.py`](./agents.py). |
+| Impact | The workflow gives a repeat ticket a verified or flagged path instead of silently solving it again; the four-ticket fixtures are in [`data/demo_story_tickets.json`](./data/demo_story_tickets.json). |
+| Technical execution | FastAPI orchestration and streaming are in [`server.py`](./server.py); the single-file UI is [`index.html`](./index.html); tests cover server, agent, and benchmark behavior in [`tests/`](./tests/). |
+| Innovation | The app separates unapproved drafts from promoted knowledge and requires an explicit rewrite-and-promote approval step. |
+| Presentation | The three screenshots and the demo script [`docs/DEMO_SCRIPT.md`](./docs/DEMO_SCRIPT.md) show the actual workflow. |
 
-## Motion
+## Quick start on Windows
 
-The dashboard uses short, state-triggered motion to make ticket intake, memory reuse, human approval, and agent activity easier to follow. Motion uses CSS and JavaScript only; it respects `prefers-reduced-motion`, pauses live indicators when the tab is hidden, and does not replay ticket or memory entrance effects on an unchanged refresh.
+The GitHub Actions workflow tests Python 3.10 and 3.14. Use 3.10 or 3.14.
 
-Run the headless browser check with `npm --prefix tests/motion install` followed by `npm --prefix tests/motion test`. It serves the dashboard with mocked Meko/Gemini responses, so no external keys are needed. The ticket-stream and approval recordings are written to `docs/motion-recordings/`.
+Command Prompt:
 
-## How the workflow works
-
-1. **Receive a ticket.** A customer-support issue is submitted through the dashboard or API.
-2. **Triage it.** The server classifies the issue into a category, short intent, and priority using keyword rules. Unmatched tickets use the `Other` / `normal` defaults.
-3. **Choose a resolution agent.** The server assigns the request to the least-used running agent (Solver or Helper). An optional legacy API field can select one explicitly.
-4. **Search shared context.** The agent queries the configured Meko datapack for approved knowledge and saved drafts. Approved results are checked for relevance.
-5. **Choose a knowledge path:**
-   - **Approved result found (`verified`):** generate a concise response grounded in approved context.
-   - **Matching draft found (`draft_reused`):** reuse it as an unverified suggestion and flag the response for human review.
-   - **No usable result (`new_draft_saved`):** generate cautious, generic troubleshooting guidance and save it to Meko as an unapproved draft.
-6. **Review and promote.** A human can review a pending draft in the dashboard. Approval rewrites it into a knowledge-base entry and promotes it through Meko. Promotion is a one-way Meko operation.
-7. **Inspect the trace.** Each ticket gets its own Meko conversation containing the ticket, reply, status, and workflow trace. Gemini token usage is tracked per call when the provider returns usage metadata; unknown usage is labeled rather than estimated.
-8. **Run an isolated benchmark.** The repository includes 100 fictional knowledge entries and 60 benchmark tickets grouped into 20 draft → reuse → approval → verified flows. Use a fresh, isolated Meko datapack; never point the runner at a shared or production datapack.
-
-### Approval flow in five sentences
-
-1. A ticket with no relevant approved answer receives cautious guidance and a new Meko draft.
-2. The draft stays unapproved and is listed on the Memory page with its returned author and time.
-3. A person reviews the text and explicitly selects **Approve**.
-4. SupportIQ rewrites the draft as a knowledge entry, updates it, then asks Meko to promote it.
-5. A later ticket searches the shared datapack and can return a verified answer; promotion is one-way in this prototype.
-
-The code includes [`support_knowledge_base.md`](./support_knowledge_base.md) as a fictional ShopEasy example. The benchmark baseline uses the complete 100-entry fixture in [`data/support_knowledge_base_100.json`](./data/support_knowledge_base_100.json). The app does not upload either file automatically; approved knowledge must already be available in the selected Meko datapack.
-
-## Screenshots
-
-Page captures are saved at 1440px in [`docs/screenshots/`](./docs/screenshots/):
-
-- [Desk](./docs/screenshots/desk.png)
-- [Memory](./docs/screenshots/memory.png)
-
-## Measured benchmark results
-
-**Pending.** No run from the new single-file benchmark format is stored yet. The `/api/benchmark/results` endpoint reads `data/benchmark_results.json` and reports measured results after the command in [Isolated benchmark setup](#isolated-benchmark-setup) is run. No benchmark values are estimated or prefilled.
-
-## Requirements
-
-Before running the app, you need:
-
-- Python 3.10 or later.
-- A Meko API key and access to a Meko datapack (the default name is `support-hackathon`).
-- A Google Gemini API key with access to the configured model.
-- Network access to the Meko and Google AI services.
-
-## Configuration
-
-Create a local `.env` file from the safe template:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Open `.env` in a text editor and set your own credentials:
-
-```dotenv
-MEKO_API_KEY=your_meko_api_key
-GEMINI_API_KEY=your_gemini_api_key
-GEMINI_MODEL=gemini-3.1-flash-lite
-GEMINI_FALLBACK_MODEL=
-DATAPACK_NAME=support-hackathon
-```
-
-`MEKO_API_KEY` and `GEMINI_API_KEY` are required for the full ticket workflow. The FastAPI dashboard can still start without a Meko connection, reports the failure, and retries on later requests. `GEMINI_MODEL` and `DATAPACK_NAME` have defaults shown above. `GEMINI_FALLBACK_MODEL` is optional and is tried after transient retries against the primary model. `DATAPACK_NAME` must match a datapack accessible to your Meko account.
-
-The repository's `.gitignore` excludes `.env`. Keep the real keys in `.env`, never commit or paste them into source files, screenshots, issue reports, or chat. If a key has been exposed, revoke or rotate it with its provider.
-
-## Run locally
-
-### Windows PowerShell
-
-From the repository folder:
-
-```powershell
-py -3 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-Copy-Item .env.example .env
-notepad .env
-```
-
-After adding your credentials and saving `.env`, start the dashboard:
-
-```powershell
-.\.venv\Scripts\python.exe server.py
-```
-
-### macOS or Linux
-
-From the repository folder:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
+```bat
+py -3.10 -m venv .venv
+.venv\Scripts\activate.bat
 python -m pip install -r requirements.txt
-cp .env.example .env
-```
-
-Edit `.env`, set your credentials, and start the dashboard:
-
-```bash
+copy .env.example .env
 python server.py
 ```
 
-The server listens on `127.0.0.1:8000`. Open [http://localhost:8000](http://localhost:8000) in a browser. Stop it with `Ctrl+C`.
+PowerShell:
 
-FastAPI's interactive API documentation is available at [http://localhost:8000/docs](http://localhost:8000/docs) while the server is running.
+```powershell
+py -3.10 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+python server.py
+```
 
-## API reference
+Open [http://localhost:8000](http://localhost:8000) after the server starts.
 
-All endpoints are served from the local FastAPI application.
+Set these two required names in `.env`: `MEKO_API_KEY` and `GEMINI_API_KEY`. `GEMINI_MODEL` and `DATAPACK_NAME` are optional settings in [`.env.example`](./.env.example). Never commit or share `.env`; keys are never committed.
 
-| Method | Path | Purpose |
+## Try the demo
+
+Use a demo or benchmark datapack and the four fixtures in [`data/demo_story_tickets.json`](./data/demo_story_tickets.json).
+
+| Step | Ticket fixture | Expected outcome |
 |---|---|---|
-| `GET` | `/` | Serve the dashboard. |
-| `GET` | `/api/health` | Report API, Meko, agent-count, model, LLM error count, ticket error rate, selected datapack name, and local history status. Does not return credentials. |
-| `POST` | `/api/ticket` | Process one ticket and return its result and execution trace. |
-| `POST` | `/api/ticket/stream` | Process one ticket and stream progress as Server-Sent Events. |
-| `GET` | `/api/metrics` | Return persisted live ticket results and workflow errors. |
-| `GET` | `/api/drafts` | Return unapproved memories currently listed from Meko. |
-| `GET` | `/api/memory/lifecycle` | Return pending and promoted memory metadata without email fields. |
-| `POST` | `/api/memory/search` | Search Meko shared context. |
-| `POST` | `/api/approve` | Rewrite and promote a selected Meko draft. |
-| `GET` | `/api/selflearning` | Return Meko self-learning signals with raw query text and email fields removed. |
-| `POST` | `/api/selflearning/verify` | Replay a Meko search only when explicitly requested by the user. |
-| `GET` | `/api/benchmark/results` | Return the one local aggregate benchmark result separately from live metrics. |
-| `GET` | `/api/benchmark/fixtures` | Return the fictional benchmark tickets and demo-story fixtures. |
+| 1. Known issue | `The wallet balance is blank after signing in on a new phone.` | The seeded approved entry is expected to return `verified`. |
+| 2. New issue | `A customer receives two return labels for one return request.` | No approved match or matching draft is expected, so the agent saves `new_draft_saved`. |
+| 3. Reworded repeat | `The return page created a second label for the same package.` | After Meko indexes the draft, a reworded match should return `draft_reused` and need review. |
+| 4. Approved repeat | `I still need help because my single return request has two shipping labels.` | Approve the draft in Memory and wait about 10 seconds for Meko to index it, then expect `verified`. |
 
-### Request examples
+Routing is least-used-agent routing, so which agent handles each fixture can vary. Meko indexing can take longer than 10 seconds. If a repeated ticket is not found, resubmit it after indexing or inspect the actual status in the ticket trace.
 
-Submit a ticket:
+## Tests and checks
 
-```json
-{
-  "ticket": "My refund has not arrived."
-}
-```
-
-Ticket text must contain 1–4000 characters. For backwards compatibility, `/api/ticket` also accepts an optional `agent` value of `agent1-solver` or `agent2-helper`; normally routing is automatic.
-
-Search shared memory:
-
-```json
-{
-  "query": "refund has not arrived"
-}
-```
-
-Memory search accepts a query of 1–500 characters.
-
-Approve a draft:
-
-```json
-{
-  "id": "meko-memory-id",
-  "text": "The draft text returned by the draft listing"
-}
-```
-
-The server returns ticket details such as the assigned agent, triage category and priority, response, verification status, per-call token usage, Meko persistence status, memory-search information, and trace events. `/api/ticket/stream` emits `data:` events while processing, followed by a `complete` event containing the result, or an `error` event if processing fails.
-
-## Command-line demo
-
-[`scripts/demo_cli.py`](./scripts/demo_cli.py) demonstrates the knowledge lifecycle in a terminal: use existing approved knowledge, create a new draft, reuse a draft with a review flag, approve a draft, and query it again. It uses the same Meko and Gemini credentials as the web app:
+Run the Python suite:
 
 ```powershell
-.\.venv\Scripts\python.exe -m scripts.demo_cli
+python -m pytest
 ```
 
-On macOS or Linux, activate `.venv` first, then run `python -m scripts.demo_cli`. The demo can make persistent changes to your Meko datapack. Its optional `RESET=1` mode is refused unless `DATAPACK_NAME` contains `demo` or `benchmark` and `CONFIRM_RESET_DATAPACK` exactly matches that name.
-
-### Isolated benchmark setup
-
-Generate or refresh the checked-in fictional fixtures:
+Check tracked and staged files for common credential prefixes:
 
 ```powershell
-.\.venv\Scripts\python.exe -m scripts.generate_benchmark_data
+python scripts/check_secrets.py
 ```
 
-Create a new empty benchmark datapack (for the lifecycle workflow) or seed a separate demo datapack with 100 promoted fictional entries. Choose a new name if the exact name already exists:
+The motion check is documented in [`tests/motion/package.json`](./tests/motion/package.json). It uses Playwright with mocked Meko and Gemini responses:
 
 ```powershell
-.\.venv\Scripts\python.exe -m scripts.create_demo_datapack --name supportiq-benchmark-2027-01-17 --confirm-name supportiq-benchmark-2027-01-17
-.\.venv\Scripts\python.exe -m scripts.create_demo_datapack --name supportiq-demo-kb-2027-01-17 --confirm-name supportiq-demo-kb-2027-01-17 --seed-kb
+npm --prefix tests/motion install
+npm --prefix tests/motion test
 ```
 
-The utility refuses an existing exact name and never deletes or resets another datapack. For the 60-case benchmark, use two PowerShell terminals. In Terminal 1, set the exact pack name and start SupportIQ:
+GitHub Actions workflow [`.github/workflows/tests.yml`](./.github/workflows/tests.yml) runs on pushes and pull requests. It tests Python 3.10 and 3.14, compiles the Python sources, runs `python -m pytest -q`, and runs `python scripts/check_secrets.py`.
+
+## Benchmark
+
+The benchmark measures 60 fictional tickets across 20 lifecycle groups. It compares the Meko-backed workflow with a measured full-knowledge-base Gemini reply, and records retrieval hit rate, reuse rate, false-reuse rate, latency, and token totals. A knowledge fixture contains 100 entries.
+
+Create a fresh isolated datapack:
 
 ```powershell
-$env:DATAPACK_NAME = "supportiq-benchmark-2027-01-17"
-.\.venv\Scripts\python.exe server.py
+python -m scripts.create_demo_datapack --name supportiq-benchmark-2026 --confirm-name supportiq-benchmark-2026
+python -m scripts.create_demo_datapack --name supportiq-demo-kb-2026 --confirm-name supportiq-demo-kb-2026 --seed-kb
 ```
 
-In Terminal 2, run all 20 fictional flows against the same confirmed datapack:
+The benchmark script refuses a datapack unless the running app's `DATAPACK_NAME` exactly matches `--confirm-datapack`. Use the new empty or benchmark datapack with Meko connected:
 
 ```powershell
-$pack = "supportiq-benchmark-2027-01-17"
-.\.venv\Scripts\python.exe -m scripts.run_benchmark --confirm-datapack $pack
+$env:DATAPACK_NAME = "supportiq-benchmark-2026"
+python server.py
 ```
 
-The runner creates/promotes Meko memories and makes one extra full-knowledge-base Gemini reply call per ticket for a measured baseline; this can take several minutes and may incur provider usage. It writes one aggregate result to `data/benchmark_results.json`, separate from ignored `data/history.jsonl` and `/api/metrics`. The benchmark result file is local and is not committed.
-
-Supporting diagnostics live in [`scripts/`](./scripts/) and are not required to start the dashboard. Inspect Meko tool schemas with `python -m scripts.inspect_tools` before invoking unfamiliar tools. Run the credential-prefix check before each push:
+In a second terminal, run the benchmark:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/check_secrets.py
+python -m scripts.run_benchmark --confirm-datapack supportiq-benchmark-2026
 ```
 
-Install development dependencies and run the tests with:
+The runner accepts `--base-url`, `--confirm-datapack`, and `--limit-groups 1-20`; `--confirm-datapack` is required. It writes one aggregate benchmark-results JSON file, which is git-ignored.
 
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe -m pytest
-```
+Benchmark not run yet.
 
-## Repository layout
+## Limitations
 
-| File | Description |
-|---|---|
-| `server.py` | FastAPI application, ticket orchestration, HTTP API, and local server entry point. |
-| `agents.py` | Shared Meko connection, Gemini calls, Solver/Helper agent behavior, and draft approval helpers. |
-| `index.html` | Single-file web dashboard (markup, styling, and browser-side code). |
-| `support_knowledge_base.md` | Fictional ShopEasy sample knowledge base; the measured benchmark baseline uses the 100-entry JSON fixture. |
-| `scripts/demo_cli.py` | Terminal demo of approved knowledge, draft reuse, and human approval. |
-| `scripts/` | Meko schema inspection, diagnostics, and developer utilities. |
-| `requirements.txt` | Python package dependencies. |
-| `requirements-dev.txt` | Pinned test and development dependencies. |
-| `.env.example` | Safe template for required credentials and optional settings. |
-| `data/support_knowledge_base_100.json` | 100 fictional, structured support-knowledge entries. |
-| `data/benchmark_tickets.json` | 60 fictional tickets covering 20 draft/reuse/approval flows. |
-| `data/demo_story_tickets.json` | Four ticket fixtures for the known/new/reworded/verified walkthrough. |
-| `data/benchmark_results.json` | Ignored local aggregate output created by the benchmark runner; absent until a run completes. |
-| `scripts/create_demo_datapack.py` | Safely create a new isolated Meko demo or benchmark datapack. |
-| `scripts/run_benchmark.py` | Run the isolated 60-ticket workflow and write one aggregate JSON result. |
-| `docs/DEMO_SCRIPT.md` | Timed walkthrough script under 4:30. |
-| `docs/SUBMISSION_CHECKLIST.md` | Hackathon handoff and submission checklist. |
-| `docs/screenshots/` | 1440px captures of the Desk and Memory pages. |
-| `tests/` | Offline tests for fallback behavior, persistence, lifecycle redaction, usage totals, and fixture shape. |
+- Both agents run the same `SupportAgent` code. Tickets go to whichever agent has handled fewer, so the Agents page shows assignment and reuse activity, not skill.
+- All displayed support content is fictional. The data and knowledge fixtures are demonstration data, not real policy.
+- The workflow uses one configured Gemini model, with an optional fallback model. Meko and Gemini behavior is not a local simulation.
+- Meko search and Gemini model calls dominate the 15 to 30 second ticket time. SupportIQ does not claim to make tickets faster.
+- A new draft needs a short index wait, and the code waits 6 seconds after saving before continuing.
+- Reworded tickets can be missed or wrongly matched. Meko results and the model's same-problem check both affect the outcome.
+- Approvals cannot be undone from the app; promotion is permanent in Meko.
+- The "approved" count comes from Meko's promoted memories and can include seeded demo entries.
+- The app has no authentication or authorization, and ticket history is stored in a local ignored JSONL file.
+- Live Meko and Gemini behavior cannot be verified without service keys and network access.
 
 ## Troubleshooting
 
-- **Meko unavailable:** the server still starts and reports the connection state; ticket and memory requests retry the Meko connection. Check `.env`, datapack access, and network connectivity.
-- **Missing Gemini key or model access:** keyword triage still works, but resolution needs a working Gemini configuration.
-- **Meko connection or datapack error:** verify the API key, account access, network connectivity, and that `DATAPACK_NAME` exactly matches an accessible datapack.
-- **Gemini request error:** verify the API key, model access, network connectivity, and `GEMINI_MODEL`. The optional `GEMINI_FALLBACK_MODEL` is tried if the primary model remains unavailable after transient retries.
-- **Port 8000 is already in use:** stop the other local process using that port before starting this server.
-- **No drafts appear:** drafts are read from the configured Meko datapack; check that the correct datapack is selected and that it contains unapproved memories.
-- **Ticket history unavailable:** check the `history_error` field from `/api/health` and the ignored `data/history.jsonl` file's permissions and format.
-- **Benchmark results unavailable:** check the `error` field from `/api/benchmark/results` and the ignored `data/benchmark_results.json` file.
-- **An answer needs review:** `draft_reused` and `new_draft_saved` are intentionally marked unverified; have a human review the draft before promoting it.
+- **Meko is unreachable or the key is wrong:** the server can start and display `Meko disconnected`. Ticket and memory requests retry or report the Meko failure. Check `MEKO_API_KEY`, datapack access, and network connectivity.
+- **Gemini model not found or overloaded:** set `GEMINI_MODEL` to a model available to the key. `GEMINI_FALLBACK_MODEL` can provide a fallback after retry.
+- **Port already in use:** stop the process using port 8000, then run `python server.py` again.
+- **Virtual environment activation is blocked:** in an elevated PowerShell, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`, activate the environment, then open a new shell if needed.
+- **Approved entry is not immediately searchable:** wait about 10 seconds and retry the reworded ticket.
 
-## Current limitations
+## Project structure
 
-- Ticket history is stored locally as JSONL, not in an encrypted database; apply appropriate file permissions and retention.
-- The app does not implement login, user roles, or endpoint authorization.
-- There is no durable ticket database or implemented escalation workflow.
-- Meko integration supports searching shared context and listing drafts, but not a full approved-memory catalogue endpoint.
-- Human approval promotes knowledge in Meko and is not an undoable action through this app.
-- The app depends on external Meko and Google Gemini services and requires valid credentials and network access.
+```text
+agents.py                         Shared Meko connection and support-agent workflow
+server.py                         FastAPI server, routing, APIs, and local history
+index.html                        Three-page dashboard and browser JavaScript
+requirements.txt                  Runtime Python dependencies
+requirements-dev.txt              Test dependencies
+.env.example                      Safe key-name template
+data/
+  demo_story_tickets.json         Four-ticket demonstration story
+  benchmark_tickets.json          60 benchmark fixtures
+  support_knowledge_base_100.json 100 fictional knowledge entries
+scripts/
+  create_demo_datapack.py         Create an isolated demo or benchmark datapack
+  run_benchmark.py                Run the 60-case benchmark
+  generate_benchmark_data.py      Generate benchmark fixtures
+  demo_cli.py                     Terminal lifecycle demo
+  inspect_tools.py                List Meko tool names and input schemas
+  check_secrets.py                Scan tracked and staged files for common key prefixes
+tests/
+  test_agents.py                  Agent behavior tests
+  test_server.py                  Server behavior tests
+  test_benchmark_data.py          Fixture shape tests
+  test_benchmark_results.py       Benchmark result tests
+  motion/check.cjs                Playwright motion check
+docs/
+  DEMO_SCRIPT.md                  Timed demo walkthrough
+  screenshots/                    Support desk, memory, and agents captures
+.github/workflows/tests.yml       Python and secret checks in CI
+```
 
-## Security and privacy
+## Security
 
-Treat API keys and ticket contents as sensitive. The server binds to loopback (`127.0.0.1`) for local use, but the prototype has no authentication or authorization. Do not expose it to a network or use it with real customer data as-is. Before any production use, add authentication and authorization, secure secret management, appropriate data handling and retention, durable storage, monitoring, and deployment hardening.
+Keys live only in `.env`, and `.env` is excluded by [`.gitignore`](./.gitignore). Run `python scripts/check_secrets.py` before pushing. Never share a zip containing `.env`, `.git`, or `.venv`.
 
-## License
+## Credits and license
 
-No license is currently specified in this repository. Contact the project owner before redistributing or reusing it.
+SupportIQ uses Meko for shared memory and agent infrastructure, YugabyteDB for the hackathon platform context, and Gemini for generated support replies.
+
+License: `TODO: choose a license`

@@ -173,7 +173,7 @@ body.tab-hidden .ev.run .d,body.tab-hidden .agent-live.active{animation-play-sta
     <div class="step" data-s="4"><b>4</b>Every agent reuses it</div>
   </nav>
   <div class="overview" aria-label="Ticket outcomes">
-    <article><b id="stat-agent-fixes">—</b><strong>New fixes proposed by agents</strong><span>Generated for tickets without a matching fix; awaiting approval.</span></article>
+    <article><b id="stat-agent-fixes">—</b><strong>New fixes proposed by agents</strong><span>Tickets that had no matching fix, so an agent wrote one.</span></article>
     <article><b id="stat-meko-reuse">—</b><strong>Tickets answered using Meko</strong><span id="stat-meko-breakdown">—</span></article>
     <article><b id="stat-human-approvals">—</b><strong>Fixes approved by people</strong><span>Promoted to shared Meko knowledge.</span></article>
   </div>
@@ -197,6 +197,7 @@ body.tab-hidden .ev.run .d,body.tab-hidden .agent-live.active{animation-play-sta
   <h1>Two agents.<br><em>One shared workflow.</em></h1>
   <p class="hint">Both agents use the same support workflow and shared Meko memory. The app routes tickets to the least-used agent; their names track activity, not different capabilities.</p>
   <div class="agent-page" id="agent-cards"></div>
+  <p class="hint" style="margin-top:14px;max-width:70ch">Each new ticket goes to whichever agent has handled fewer, so these counts show which tickets each agent happened to receive, not what it is better at. Both agents read and write the same shared memory.</p>
 </section>
 
 <section class="page" id="pg-memory">
@@ -330,7 +331,7 @@ function render(){
   if(lifecycleLoaded){
     counter($("#stat-human-approvals"),"kpi:approvals",ap.length);
     counter($("#c-wait"),"count:pending",dr.length,motionMs("--dur-memory-count"));counter($("#c-ok"),"count:approved",ap.length,motionMs("--dur-memory-count"));
-  }else{$("#stat-human-approvals,#c-wait,#c-ok").forEach(el=>el.textContent="—")}
+  }else{$$("#stat-human-approvals,#c-wait,#c-ok").forEach(el=>el.textContent="—")}
   const badge=$("#badge");
   if(lifecycleLoaded){
     counter(badge,"count:badge",dr.length,motionMs("--dur-memory-count"));badge.hidden=!dr.length;
@@ -376,11 +377,11 @@ function render(){
         const delayIndex=expanded?index-SHOW:freshIndex;
         return card(x,fresh,fresh?Math.min(delayIndex*40,160):0)}).join("")+
       (more>0?`<button class="more${labelChanges.has(key)?" label-change":""}" data-k="${key}">${open[key]?"Show less":"Read more ("+more+" more)"}</button>`:"")};
-    const draftHtml=listHtml(dr.slice().reverse(),"wait",(x,fresh,delay)=>`<div class="fix${fresh}" style="animation-delay:${delay}ms" data-memory-id="${esc(x.id)}"><p>${esc(clean(x.text))}</p><div><span>by ${esc(x.learned_by||"an agent")}</span><button class="btn" data-id="${esc(x.id)}">Approve</button></div></div>`,"Nothing waiting. New fixes appear here.","draft:");
+    const draftHtml=listHtml(dr.slice().reverse(),"wait",(x,fresh,delay)=>`<div class="fix${fresh}" style="animation-delay:${delay}ms" data-memory-id="${esc(x.id)}"><p>${esc(clean(x.text))}</p><div><span>by ${esc(x.learned_by||"an agent")}</span><button class="btn" data-id="${esc(x.id)}">Approve</button></div></div>`,lifecycleLoaded?"Nothing waiting. New fixes appear here.":"Meko is not reachable, so this list cannot load.","draft:");
   labelChanges.delete("wait");$("#drafts").innerHTML=draftHtml;
   $$("#drafts .btn").forEach(b=>b.onclick=()=>approve(b,dr.find(x=>x.id===b.dataset.id)));
   const stamp=x=>String(x.approved_at||x.learned_at||"");
-  const approvedHtml=listHtml(ap.slice().sort((a,b)=>stamp(b).localeCompare(stamp(a))),"ok",(x,fresh,delay)=>`<div class="fix approved${fresh}" style="animation-delay:${delay}ms" data-memory-id="${esc(x.id)}"><p>${esc(clean(approvedText(x)))}</p><div><span class="tag t-verified">Approved</span></div></div>`,"No approved fixes yet.","approved:");
+  const approvedHtml=listHtml(ap.slice().sort((a,b)=>stamp(b).localeCompare(stamp(a))),"ok",(x,fresh,delay)=>`<div class="fix approved${fresh}" style="animation-delay:${delay}ms" data-memory-id="${esc(x.id)}"><p>${esc(clean(approvedText(x)))}</p><div><span class="tag t-verified">Approved</span></div></div>`,lifecycleLoaded?"No approved fixes yet.":"Meko is not reachable, so this list cannot load.","approved:");
   labelChanges.delete("ok");$("#approved").innerHTML=approvedHtml;
   $$(".more").forEach(b=>b.onclick=()=>toggleList(b));
   if(pendingApprovalMotion){const motion=pendingApprovalMotion;pendingApprovalMotion=null;playApprovalFlip(motion)}

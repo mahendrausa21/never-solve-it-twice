@@ -116,7 +116,7 @@ async def connect_meko():
                     "agent1-solver": await SupportAgent("agent1-solver", meko).start(),
                     "agent2-helper": await SupportAgent("agent2-helper", meko).start(),
                 }
-            except Exception as err:
+            except (Exception, asyncio.CancelledError) as err:  # the MCP client can raise CancelledError when Meko is unreachable
                 if hasattr(meko, "stack"):
                     try:
                         await meko.close()
@@ -440,7 +440,8 @@ async def memory_lifecycle():
         raise HTTPException(503, "Meko is unavailable. Check the server configuration and retry.")
     try:
         async with lock:
-            drafts_list = await state["meko"].list_learnings()
+            drafts_list = [item for item in await state["meko"].list_learnings()
+                           if str(item.get("text", "")).lstrip().startswith("[DRAFT")]
             approved_list = await state["meko"].list_promoted()
     except Exception as err:
         raise HTTPException(502, f"Meko lifecycle data unavailable ({type(err).__name__}).") from err
