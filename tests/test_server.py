@@ -214,3 +214,47 @@ def test_ticket_tracks_all_measured_gemini_calls(monkeypatch, tmp_path):
     assert result["token_usage"]["tracked_calls"] == 2
     assert result["meko_trace_recorded"] is True
     assert json.loads((tmp_path / "history.jsonl").read_text(encoding="utf-8"))["ticket_id"] == result["ticket_id"]
+
+
+def test_cancelled_meko_connection_is_nonfatal(monkeypatch):
+    # The MCP client raises CancelledError (not an Exception) when Meko cannot be reached.
+    class CancelledMeko:
+        async def connect(self):
+            raise asyncio.CancelledError()
+
+    old_meko, old_agents, old_error = (
+        server.state["meko"], server.state["agents"], server.state["meko_error"])
+    server.state["meko"] = None
+    server.state["agents"] = {}
+    monkeypatch.setattr(server, "Meko", CancelledMeko)
+    try:
+        assert asyncio.run(server.connect_meko()) is False
+        assert server.state["meko_error"] == "CancelledError"
+    finally:
+        server.state["meko"] = old_meko
+        server.state["agents"] = old_agents
+        server.state["meko_error"] = old_error
+
+
+def test_approval_queue_lists_only_real_drafts(monkeypatch):
+    class FakeMeko:
+        needs_reconnect = False
+
+        async def list_learnings(self):
+            return [
+                {"id": "d1", "text": "[DRAFT - unverified, written by agent1-solver] Support problem: x\nSuggested fix: y"},
+                {"id": "s1", "text": "On November 15, 2026, the user reported forgetting their phone password."},
+            ]
+
+        async def list_promoted(self):
+            return [{"id": "a1", "text": "Problem: x. Fix: y."}]
+
+    old_meko = server.state["meko"]
+    server.state["meko"] = FakeMeko()
+    try:
+        result = asyncio.run(server.memory_lifecycle())
+    finally:
+        server.state["meko"] = old_meko
+
+    assert [d["id"] for d in result["drafts"]] == ["d1"]
+    assert [a["id"] for a in result["approved"]] == ["a1"]
