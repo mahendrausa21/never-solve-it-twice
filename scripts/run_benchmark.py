@@ -220,6 +220,7 @@ def failed_row(run_id, case, created_at, error):
         "baseline_total_tokens": None,
         "retrieved_memories": [],
         "error_type": type(error).__name__,
+        "error_detail": str(error)[:200],  # server message or failure type, no secrets
         "created_at": created_at,
     }
 
@@ -289,6 +290,8 @@ def main():
             number = len(rows)
             print(f"{number:02}/{len(planned_cases)} {case['case_id']} {case['stage']}: "
                   f"{row['actual_status']} ({'pass' if row['passed'] else 'check'})")
+            if row.get("error_detail"):
+                print(f"      reason: {row['error_detail']}")
             if stop_reason and case["stage"] == "seed":
                 break
 

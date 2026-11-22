@@ -94,12 +94,19 @@ async def create_datapack(name, seed_kb):
     async with streamablehttp_client(MEKO_URL, headers=headers) as (read, write, _):
         async with ClientSession(read, write) as session:
             await session.initialize()
-            existing = await call(session, "datapack_list", {"query": name, "limit": 100})
+            # Meko requires a conversation id for these calls, so open one first.
+            setup = await call(session, "conversation_create", {"title": "SupportIQ datapack setup"})
+            setup_id = setup.get("id") if isinstance(setup, dict) else None
+            if not setup_id:
+                raise RuntimeError("Meko did not return a setup conversation id.")
+            existing = await call(session, "datapack_list", {
+                "conversation_id": setup_id, "query": name, "limit": 100})
             packs = rows_from(existing, "datapacks", "results", "items")
             if any(item.get("datapack_name") == name for item in packs if isinstance(item, dict)):
                 raise RuntimeError("A datapack with this exact name already exists; choose a new name.")
 
-            created = await call(session, "datapack_create", {"name": name})
+            created = await call(session, "datapack_create", {
+                "name": name, "conversation_id": setup_id})
             datapack_id = find_datapack_id(created)
             if not datapack_id:
                 raise RuntimeError("Meko created a datapack but did not return its id.")
@@ -166,8 +173,13 @@ def main():
     load_dotenv()
     try:
         datapack_id = asyncio.run(create_datapack(args.name, args.seed_kb))
-    except Exception as err:
-        raise SystemExit(f"Demo datapack creation failed ({type(err).__name__}).") from err
+    except BaseException as err:  # includes ExceptionGroup, which wraps the real error
+        if isinstance(err, (KeyboardInterrupt, SystemExit)):
+            raise
+        leaf = err
+        while getattr(leaf, "exceptions", None):
+            leaf = leaf.exceptions[0]
+        raise SystemExit(f"Demo datapack creation failed ({type(leaf).__name__}: {leaf}).") from err
     print(f"Datapack id: {datapack_id}")
     print(f"Set DATAPACK_NAME={args.name} before starting SupportIQ.")
 

@@ -287,14 +287,15 @@ async def process_ticket(body, publish=None):
         failed_at = datetime.now(timezone.utc).isoformat()
         failure = {
             "ticket_id": ticket_id, "ticket": ticket, "status": "error",
-            "error_type": type(err).__name__, "agent": agent.name,
+            "error_type": type(err).__name__, "error_message": str(err)[:300],
+            "agent": agent.name,
             "category": triage["category"], "intent": triage["intent"],
             "priority": triage["priority"], "created_at": request_started.isoformat(),
             "completed_at": failed_at, "trace": [
                 request_event, triage_event,
                 {"t": round((datetime.now(timezone.utc) - request_started).total_seconds(), 1),
                  "at": failed_at, "step": "Request failed",
-                 "detail": f"Workflow stopped ({type(err).__name__}).", "state": "failed"},
+                 "detail": f"Workflow stopped ({type(err).__name__}): {str(err)[:200]}", "state": "failed"},
             ],
         }
         state["history"].append(failure)
