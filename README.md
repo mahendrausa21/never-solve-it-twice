@@ -77,12 +77,12 @@ A ticket is classified locally before routing. The server assigns it to whicheve
 
 ## Quick start on Windows
 
-The GitHub Actions workflow tests Python 3.10 and 3.14. Use 3.10 or 3.14.
+The GitHub Actions workflow tests Python 3.11 and 3.14. Use 3.11 or 3.14.
 
 Command Prompt:
 
 ```bat
-py -3.10 -m venv .venv
+py -3.11 -m venv .venv
 .venv\Scripts\activate.bat
 python -m pip install -r requirements.txt
 copy .env.example .env
@@ -92,7 +92,7 @@ python server.py
 PowerShell:
 
 ```powershell
-py -3.10 -m venv .venv
+py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 Copy-Item .env.example .env
@@ -137,7 +137,7 @@ npm --prefix tests/motion install
 npm --prefix tests/motion test
 ```
 
-GitHub Actions workflow [`.github/workflows/tests.yml`](./.github/workflows/tests.yml) runs on pushes and pull requests. It tests Python 3.10 and 3.14, compiles the Python sources, runs `python -m pytest -q`, and runs `python scripts/check_secrets.py`.
+GitHub Actions workflow [`.github/workflows/tests.yml`](./.github/workflows/tests.yml) runs on pushes and pull requests. It tests Python 3.11 and 3.14, compiles the Python sources, runs `python -m pytest -q`, and runs `python scripts/check_secrets.py`.
 
 ## Benchmark
 
