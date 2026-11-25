@@ -246,6 +246,17 @@ def main():
     if health.get("meko") != "connected":
         parser.error("Meko is not connected; start the app with the isolated datapack configured.")
 
+    # The lifecycle flows need a datapack that knows nothing yet. If it already holds
+    # approved knowledge (for example it was seeded) every "new" problem would be answered
+    # from it and the run would be meaningless, so stop before spending any tickets.
+    lifecycle = request_json(args.base_url, "/api/memory/lifecycle")
+    approved_count = len(lifecycle.get("approved") or [])
+    draft_count = len(lifecycle.get("drafts") or [])
+    if approved_count or draft_count:
+        parser.error(
+            f"The datapack is not empty ({approved_count} approved, {draft_count} drafts). "
+            "Create a new, empty datapack WITHOUT --seed-kb, restart the app with it, and run again.")
+
     cases = json.loads(FIXTURE.read_text(encoding="utf-8"))
     knowledge = json.loads(KNOWLEDGE_FIXTURE.read_text(encoding="utf-8"))
     grouped = defaultdict(list)
